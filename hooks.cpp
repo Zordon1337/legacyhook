@@ -24,6 +24,7 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 
 	if (I::engine->IsInGame())
 	{
+	{
 		auto localPlayer = I::entitylist->GetEntityFromIndex(I::engine->GetLocalPlayerIndex());
 
 		if (localPlayer)
