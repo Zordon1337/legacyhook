@@ -110,5 +110,8 @@
     <ClInclude Include="Globals.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="vars.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

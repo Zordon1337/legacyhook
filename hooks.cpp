@@ -2,6 +2,7 @@
 #include "interfaces.h"
 #include "minhook/MinHook.h"
 #include <iostream>
+#include "vars.hpp"
 HFont WatermarkFont;
 HFont MediumFont;
 void hk::Init() {
@@ -39,7 +40,7 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 	if (I::engine->IsInGame())
 	{
 		auto localPlayer = I::entitylist->GetEntityFromIndex(I::engine->GetLocalPlayerIndex());
-
+		vars::localPlayer = localPlayer;
 		if (localPlayer)
 		{
 			if (!(localPlayer->getFlags() & CEntity::FL_ONGROUND)) {
@@ -61,12 +62,13 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 	{
 		hk::DrawString(10, 10, 255, 255, 255, 255, false, "Legacyhook built on " __DATE__, WatermarkFont);
 		hk::DrawString(10, 30, 255, 255, 255, 255, false, "https://github.com/Zordon1337/legacyhook", MediumFont);
-		if (I::engine->IsInGame())
+		if (I::engine->IsInGame() && vars::localPlayer)
 		{
 			for (int i = 1; i < 32; i++) {
 				auto player = I::entitylist->GetEntityFromIndex(i);
 				if (!player) continue;
 				if (player->IsDormant()) continue;
+				if (player->getTeam() == vars::localPlayer->getTeam()) continue;
 				CMatrix3x4 bones[256];
 				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
 				CVector top;
