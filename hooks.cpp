@@ -70,7 +70,7 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				CMatrix3x4 bones[256];
 				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
 				CVector top;
-				if (I::debugoverlay->ScreenPosition(bones[8].Origin() + CVector{ 0.f,0.f,11.f }, top)) continue;
+				if (I::debugoverlay->ScreenPosition(bones[6].Origin() + CVector{ 0.f,0.f,11.f }, top)) continue;
 				CVector bottom;
 				if (I::debugoverlay->ScreenPosition(player->GetAbsOrigin(), bottom)) continue;
 				const float h = bottom.y - top.y;
