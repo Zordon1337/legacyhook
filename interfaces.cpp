@@ -10,7 +10,10 @@ void I::Init() {
 	I::engine = I::Capture<IVEngineClient>("engine.dll", "VEngineClient013");
 
 	I::entitylist = I::Capture<IClientEntityList>("client.dll", "VClientEntityList003");
-
+	I::panel = I::Capture<IVPanel>("vgui2.dll", "VGUI_Panel009");
+	I::surface = I::Capture<ISurface>("vguimatsurface.dll", "VGUI_Surface031");
+	I::enginevgui = I::Capture<IEngineVGui>("engine.dll", "VEngineVGui001");
+	I::debugoverlay = I::Capture<IVDebugOverlay>("engine.dll", "VDebugOverlay003");
 }
 
 void* I::Capture(const char* moduleName, const char* interfaceName) noexcept
