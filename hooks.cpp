@@ -20,11 +20,12 @@ void hk::Init() {
 		reinterpret_cast<void**>(&PaintTraverseOriginal)
 	);
 
+	MH_EnableHook(MH_ALL_HOOKS);
+
 	WatermarkFont = I::surface->CreateFont();
 	MediumFont = I::surface->CreateFont();
 	I::surface->SetFontGlyphSet(WatermarkFont, "Arial", 18, 400, 0, 0, 0x200);
 	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x200);
-	MH_EnableHook(MH_ALL_HOOKS);
 }
 
 bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
@@ -60,6 +61,26 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 	{
 		hk::DrawString(10, 10, 255, 255, 255, 255, false, "Legacyhook built on " __DATE__, WatermarkFont);
 		hk::DrawString(10, 30, 255, 255, 255, 255, false, "https://github.com/Zordon1337/legacyhook", MediumFont);
+		if (I::engine->IsInGame())
+		{
+			for (int i = 1; i < 32; i++) {
+				auto player = I::entitylist->GetEntityFromIndex(i);
+				if (!player) continue;
+				if (player->IsDormant()) continue;
+				CMatrix3x4 bones[256];
+				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
+				CVector top;
+				if (I::debugoverlay->ScreenPosition(bones[8].Origin() + CVector{ 0.f,0.f,11.f }, top)) continue;
+				CVector bottom;
+				if (I::debugoverlay->ScreenPosition(player->GetAbsOrigin(), bottom)) continue;
+				const float h = bottom.y - top.y;
+				const float w = h * 0.3f;
+				const auto left = static_cast<int>(top.x - w);
+				const auto right = static_cast<int>(top.x + w);
+				I::surface->DrawSetColor(255, 255, 255, 255);
+				I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
+			}
+		}
 	}
 	PaintTraverseOriginal(I::panel, panel, forceRepaint, allowForce);
 }

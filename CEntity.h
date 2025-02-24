@@ -62,8 +62,28 @@ public:
 	{
 		return *reinterpret_cast<int32_t*>(reinterpret_cast<uintptr_t>(this) + 0x100); // m_fFlags
 	}
+	inline int32_t getTeam() noexcept
+	{
+		return *reinterpret_cast<int32_t*>(reinterpret_cast<uintptr_t>(this) + 0xB58); // m_iTeamNum
+	}
 
 
+	constexpr bool SetupBones(CMatrix3x4* out, std::int32_t max, std::int32_t mask, float currentTime) noexcept
+	{
+		return memory::Call<bool>(this + 0x4, 13, out, max, mask, currentTime);
+	}
 
+	constexpr bool IsDormant() noexcept
+	{
+		return memory::Call<bool>(this + 0x8, 9);
+	}
 
+	constexpr bool IsAlive() noexcept
+	{
+		return memory::Call<bool>(this, 156);
+	}
+	constexpr const CVector& GetAbsOrigin() noexcept
+	{
+		return memory::Call<const CVector&>(this, 10);
+	}
 };

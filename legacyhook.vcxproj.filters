@@ -107,5 +107,8 @@
     <ClInclude Include="EngineVGUI.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

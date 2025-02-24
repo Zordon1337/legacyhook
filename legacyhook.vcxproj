@@ -156,6 +156,7 @@
     <ClInclude Include="CUserCmd.h" />
     <ClInclude Include="EngineVGUI.h" />
     <ClInclude Include="EntityList.h" />
+    <ClInclude Include="Globals.h" />
     <ClInclude Include="hooks.h" />
     <ClInclude Include="interfaces.h" />
     <ClInclude Include="ISurface.h" />

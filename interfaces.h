@@ -5,6 +5,7 @@
 #include "ISurface.h"
 #include "IVPanel.h"
 #include "EngineVGUI.h"
+#include "Globals.h"
 namespace I {
 	void Init();
 	void* baseclient;
@@ -15,6 +16,7 @@ namespace I {
 	IVPanel* panel;
 	IEngineVGui* enginevgui;
 	IVDebugOverlay* debugoverlay;
+	IGlobalVars* globals = nullptr;
 
 	void* Capture(const char* moduleName, const char* interfaceName) noexcept;
 

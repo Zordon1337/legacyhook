@@ -23,4 +23,13 @@ public:
 	{
 		return memory::Call<bool>(this, 26);
 	}
+	constexpr const CMatrix4x4& WorldToScreenMatrix() noexcept
+	{
+		return memory::Call<const CMatrix4x4&>(this, 37);
+	}
+	constexpr void GetScreenSize(std::int32_t& width, std::int32_t& height) noexcept
+	{
+		memory::Call<void>(this, 6, std::ref(width), std::ref(height));
+	}
+
 };
