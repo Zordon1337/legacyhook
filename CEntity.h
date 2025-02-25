@@ -62,9 +62,9 @@ public:
 	{
 		return *reinterpret_cast<int32_t*>(reinterpret_cast<uintptr_t>(this) + 0x100); // m_fFlags
 	}
-	inline int32_t getTeam() noexcept
+	inline int getTeam() noexcept
 	{
-		return *reinterpret_cast<int32_t*>(reinterpret_cast<uintptr_t>(this) + 0xB58); // m_iTeamNum
+		return *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(this) + 0xF0); // m_iTeamNum
 	}
 
 
@@ -85,5 +85,11 @@ public:
 	constexpr const CVector& GetAbsOrigin() noexcept
 	{
 		return memory::Call<const CVector&>(this, 10);
+	}
+	inline int getHealth() noexcept {
+		return *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(this) + 0xFC);
+	}
+	 bool isAlive() noexcept {
+		return this->getHealth() > 0;
 	}
 };

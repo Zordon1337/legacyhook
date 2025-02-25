@@ -124,7 +124,10 @@ public:
     {
         return { data[0][3], data[1][3], data[2][3] };
     }
+    constexpr bool IsValidBone() {
 
+        return data[0][0] != 0.0f || data[0][1] != 0.0f || data[0][2] != 0.0f || data[0][3] != 0.0f;
+    }
     float data[3][4];
 };
 

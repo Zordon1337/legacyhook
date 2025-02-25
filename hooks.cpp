@@ -3,6 +3,7 @@
 #include "minhook/MinHook.h"
 #include <iostream>
 #include "vars.hpp"
+#include <string>
 HFont WatermarkFont;
 HFont MediumFont;
 void hk::Init() {
@@ -68,19 +69,31 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				auto player = I::entitylist->GetEntityFromIndex(i);
 				if (!player) continue;
 				if (player->IsDormant()) continue;
+				// is local?
+				if (player == vars::localPlayer) continue;
+				// is teammate?
 				if (player->getTeam() == vars::localPlayer->getTeam()) continue;
+				// is dead?
+				if (!player->isAlive()) continue;
 				CMatrix3x4 bones[256];
 				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
 				CVector top;
-				if (I::debugoverlay->ScreenPosition(bones[6].Origin() + CVector{ 0.f,0.f,11.f }, top)) continue;
+				if (I::debugoverlay->ScreenPosition(bones[6].Origin() + CVector{ 0.f,0.f,16.f }, top)) continue;
 				CVector bottom;
 				if (I::debugoverlay->ScreenPosition(player->GetAbsOrigin(), bottom)) continue;
+				CVector hit5;
+				if (I::debugoverlay->ScreenPosition(bones[5].Origin(), hit5)) continue;
 				const float h = bottom.y - top.y;
 				const float w = h * 0.3f;
 				const auto left = static_cast<int>(top.x - w);
 				const auto right = static_cast<int>(top.x + w);
 				I::surface->DrawSetColor(255, 255, 255, 255);
+                std::string teamName = std::to_string(player->getTeam());
+                DrawString(hit5.x, hit5.y, 255, 255, 255, 255, false, teamName.c_str(), MediumFont);
 				I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
+
+
+				
 			}
 		}
 	}
