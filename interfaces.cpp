@@ -24,6 +24,8 @@ void I::Init() {
 	std::cout << "globals: " << I::globals << std::endl;
 	I::engineTrace = I::Capture<IEngineTrace>("engine.dll", "EngineTraceClient004");
 	std::cout << "engineTrace: " << I::engineTrace << std::endl;
+	I::prediction = I::Capture<IPrediction>("client.dll", "VClientPrediction001");
+	std::cout << "prediction: " << I::prediction << std::endl;
 }
 
 void* I::Capture(const char* moduleName, const char* interfaceName) noexcept

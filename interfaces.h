@@ -7,6 +7,7 @@
 #include "EngineVGUI.h"
 #include "Globals.h"
 #include "IEngineTrace.h"
+#include "IPrediction.h"
 namespace I {
 	void Init();
 	void* baseclient;
@@ -19,7 +20,7 @@ namespace I {
 	IVDebugOverlay* debugoverlay;
 	IGlobalVars* globals = nullptr;
 	IEngineTrace* engineTrace = nullptr;
-
+	IPrediction* prediction = nullptr;
 	void* Capture(const char* moduleName, const char* interfaceName) noexcept;
 
 	template <typename Interface>

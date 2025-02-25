@@ -45,6 +45,9 @@
     <ClCompile Include="minhook\trampoline.c">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="meth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="hooks.h">
@@ -115,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="IEngineTrace.h">
       <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="IPrediction.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="meth.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

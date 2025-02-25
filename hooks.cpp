@@ -4,7 +4,7 @@
 #include <iostream>
 #include "vars.hpp"
 #include <string>
-
+#include "meth.h"
 #include <thread>
 #include <chrono>
 
@@ -25,7 +25,11 @@ void hk::Init() {
 		&PaintTraverse,
 		reinterpret_cast<void**>(&PaintTraverseOriginal)
 	);
-
+	MH_CreateHook(
+		memory::Get(I::baseclient, 36),
+		&FrameStage,
+		reinterpret_cast<void**>(&FrameStageoriginal)
+	);
 	MH_EnableHook(MH_ALL_HOOKS);
 
 	WatermarkFont = I::surface->CreateFont();
@@ -55,10 +59,15 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 					cmd->buttons |= CUserCmd::IN_JUMP;
 			}
 
-			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return false;
+			if(!true) // reserved for autofire check
+				if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return false;
+
+			CVector m_oldangle = cmd->viewangles;
+			float m_oldforward = cmd->forwardmove;
+			float m_oldsidemove = cmd->sidemove;
 
 			CVector bestAngle{};
-			float bestFov = 10.f;
+			float bestFov = 180.f;
 			CEntity* bestTarget = nullptr;
 
 			for (int i = 1; i < 32; i++) {
@@ -97,9 +106,21 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 				cmd->buttons |= CUserCmd::IN_ATTACK; 
 			}
 
+			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) {
+				int rx = 0;
+				cmd->viewangles.x = rx;
+				int ry = std::rand() % 360;
+				if (ry > 180) {
+					ry /= 2;
+					ry *= -1;
+				}
+				cmd->viewangles.y = ry;
+
+				vars::ang = cmd->viewangles;
+			}
+			meth::CorrectMovement(m_oldangle, cmd, m_oldforward, m_oldsidemove);
 
 		}
-
 
 	}
 
@@ -152,6 +173,32 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 	PaintTraverseOriginal(I::panel, panel, forceRepaint, allowForce);
 }
 
+void __stdcall hk::FrameStage(client_frame_stage_t stage) {
+	CVector ang = CVector(89.f, 89.f, 0.f);
+	std::cout << stage << std::endl;
+	switch (stage) {
+	case FRAME_UNDEFINED:                       break;
+	case FRAME_START:
+
+		break;
+	case FRAME_NET_UPDATE_START:                break;
+	case FRAME_NET_UPDATE_POSTDATAUPDATE_START:
+		break;
+	case FRAME_NET_UPDATE_POSTDATAUPDATE_END:   break;
+	case FRAME_NET_UPDATE_END:
+
+		break;
+	case FRAME_RENDER_START:
+		if (I::engine->IsInGame() && vars::localPlayer)
+		{
+			I::prediction->SetLocalViewAngles(vars::ang);
+		}
+		break;
+	case FRAME_RENDER_END:                      break;
+	default:                                    break;
+	}
+	hk::FrameStageoriginal(I::baseclient, stage);
+}
 
 void hk::DrawString(int x, int y, int r, int g, int b, int a, bool bCenter, const char* pszText, unsigned long font)
 {
