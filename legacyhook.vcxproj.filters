@@ -113,5 +113,8 @@
     <ClInclude Include="vars.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="IEngineTrace.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

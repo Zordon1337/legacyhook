@@ -158,6 +158,7 @@
     <ClInclude Include="EntityList.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="hooks.h" />
+    <ClInclude Include="IEngineTrace.h" />
     <ClInclude Include="interfaces.h" />
     <ClInclude Include="ISurface.h" />
     <ClInclude Include="IVDebugOverlay.h" />

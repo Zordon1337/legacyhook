@@ -6,6 +6,7 @@
 #include "IVPanel.h"
 #include "EngineVGUI.h"
 #include "Globals.h"
+#include "IEngineTrace.h"
 namespace I {
 	void Init();
 	void* baseclient;
@@ -17,6 +18,7 @@ namespace I {
 	IEngineVGui* enginevgui;
 	IVDebugOverlay* debugoverlay;
 	IGlobalVars* globals = nullptr;
+	IEngineTrace* engineTrace = nullptr;
 
 	void* Capture(const char* moduleName, const char* interfaceName) noexcept;
 

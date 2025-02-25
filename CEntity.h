@@ -92,4 +92,17 @@ public:
 	 bool isAlive() noexcept {
 		return this->getHealth() > 0;
 	}
+	 inline CVector getVecView() noexcept
+	 {
+		 return *reinterpret_cast<CVector*>(reinterpret_cast<uintptr_t>(this) + 0x104);
+	 }
+	 inline CVector getVecOrgin() noexcept
+	 {
+		 return *reinterpret_cast<CVector*>(reinterpret_cast<uintptr_t>(this) + 0xAC);
+	 }
+	 CVector GetEyePosition() noexcept
+	 {
+		 CVector ViewOffset = this->getVecView();
+		 return this->GetAbsOrigin() + ViewOffset;
+	 }
 };

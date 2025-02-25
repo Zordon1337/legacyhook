@@ -4,6 +4,10 @@
 #include <iostream>
 #include "vars.hpp"
 #include <string>
+
+#include <thread>
+#include <chrono>
+
 HFont WatermarkFont;
 HFont MediumFont;
 void hk::Init() {
@@ -50,7 +54,52 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 				else
 					cmd->buttons |= CUserCmd::IN_JUMP;
 			}
+
+			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return false;
+
+			CVector bestAngle{};
+			float bestFov = 10.f;
+			CEntity* bestTarget = nullptr;
+
+			for (int i = 1; i < 32; i++) {
+				auto player = I::entitylist->GetEntityFromIndex(i);
+				if (!player || player->IsDormant() || player == vars::localPlayer ||
+					player->getTeam() == vars::localPlayer->getTeam() || !player->isAlive())
+					continue;
+
+				CMatrix3x4 bones[128];
+				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
+
+				CVector localEyePosition = vars::localPlayer->GetEyePosition();
+
+				CTrace trace;
+				I::engineTrace->TraceRay(
+					CRay{ localEyePosition, bones[10].Origin() },
+					MASK_SHOT, { vars::localPlayer },
+					trace
+				);
+
+				if (!trace.entity || trace.fraction < 0.97f) continue;
+
+				CVector enemyAngle = (bones[10].Origin() - localEyePosition).ToAngle() - cmd->viewangles;
+				float fov = std::hypot(enemyAngle.x, enemyAngle.y);
+
+				if (fov < bestFov) {
+					bestFov = fov;
+					bestAngle = enemyAngle;
+					bestTarget = player;
+				}
+			}
+
+			if (bestTarget) {
+				cmd->viewangles = cmd->viewangles + bestAngle;
+				I::engine->SetViewAngles(cmd->viewangles); 
+				cmd->buttons |= CUserCmd::IN_ATTACK; 
+			}
+
+
 		}
+
 
 	}
 
@@ -78,20 +127,23 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				CMatrix3x4 bones[256];
 				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
 				CVector top;
-				if (I::debugoverlay->ScreenPosition(bones[6].Origin() + CVector{ 0.f,0.f,16.f }, top)) continue;
+				if (I::debugoverlay->ScreenPosition(bones[10].Origin() + CVector{ 0.f,0.f,16.f }, top)) continue;
 				CVector bottom;
 				if (I::debugoverlay->ScreenPosition(player->GetAbsOrigin(), bottom)) continue;
-				CVector hit5;
-				if (I::debugoverlay->ScreenPosition(bones[5].Origin(), hit5)) continue;
+				CVector head;
+				if (I::debugoverlay->ScreenPosition(bones[10].Origin(), head)) continue;
 				const float h = bottom.y - top.y;
 				const float w = h * 0.3f;
 				const auto left = static_cast<int>(top.x - w);
 				const auto right = static_cast<int>(top.x + w);
 				I::surface->DrawSetColor(255, 255, 255, 255);
-                std::string teamName = std::to_string(player->getTeam());
-                DrawString(hit5.x, hit5.y, 255, 255, 255, 255, false, teamName.c_str(), MediumFont);
 				I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
+				for (int i = 0; i < 16; i++) {
 
+					CVector bone;
+					if (I::debugoverlay->ScreenPosition(bones[i].Origin(), bone)) continue;
+					DrawString(bone.x, bone.y, 255, 255, 255, 255, false, std::to_string(i).c_str(),MediumFont);
+				}
 
 				
 			}

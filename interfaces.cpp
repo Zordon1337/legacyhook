@@ -22,6 +22,8 @@ void I::Init() {
 	std::cout << "debugoverlay: " << I::debugoverlay << std::endl;
 	I::globals = **reinterpret_cast<IGlobalVars***>((*reinterpret_cast<uintptr_t**>(baseclient))[11] + 10);
 	std::cout << "globals: " << I::globals << std::endl;
+	I::engineTrace = I::Capture<IEngineTrace>("engine.dll", "EngineTraceClient004");
+	std::cout << "engineTrace: " << I::engineTrace << std::endl;
 }
 
 void* I::Capture(const char* moduleName, const char* interfaceName) noexcept
