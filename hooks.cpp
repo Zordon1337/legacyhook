@@ -159,12 +159,7 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				const auto right = static_cast<int>(top.x + w);
 				I::surface->DrawSetColor(255, 255, 255, 255);
 				I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
-				for (int i = 0; i < 16; i++) {
-
-					CVector bone;
-					if (I::debugoverlay->ScreenPosition(bones[i].Origin(), bone)) continue;
-					DrawString(bone.x, bone.y, 255, 255, 255, 255, false, std::to_string(i).c_str(),MediumFont);
-				}
+				
 
 				
 			}
