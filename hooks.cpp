@@ -59,8 +59,11 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 					cmd->buttons |= CUserCmd::IN_JUMP;
 			}
 
-			if(!true) // reserved for autofire check
+			if (!true) // reserved for autofire check
 				if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return false;
+				else
+					if ((cmd->buttons & CUserCmd::IN_ATTACK))
+						cmd->buttons = 0;
 
 			CVector m_oldangle = cmd->viewangles;
 			float m_oldforward = cmd->forwardmove;
@@ -107,14 +110,11 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 			}
 
 			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) {
-				int rx = 0;
-				cmd->viewangles.x = rx;
-				int ry = std::rand() % 360;
-				if (ry > 180) {
-					ry /= 2;
-					ry *= -1;
-				}
-				cmd->viewangles.y = ry;
+				
+				if(cmd->viewangles.y > 180.f)
+					cmd->viewangles.y = -180.f;
+				cmd->viewangles.x = 89;
+				cmd->viewangles.y = vars::ang.y+4;
 
 				vars::ang = cmd->viewangles;
 			}
