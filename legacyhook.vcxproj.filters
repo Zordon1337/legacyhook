@@ -125,5 +125,8 @@
     <ClInclude Include="meth.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="cmenu.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

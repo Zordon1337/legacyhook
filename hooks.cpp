@@ -7,9 +7,10 @@
 #include "meth.h"
 #include <thread>
 #include <chrono>
-
+#include "cmenu.hpp"
 HFont WatermarkFont;
 HFont MediumFont;
+HFont TitleFont;
 void hk::Init() {
 
 	if (MH_Initialize())
@@ -34,8 +35,10 @@ void hk::Init() {
 
 	WatermarkFont = I::surface->CreateFont();
 	MediumFont = I::surface->CreateFont();
+	TitleFont = I::surface->CreateFont();
 	I::surface->SetFontGlyphSet(WatermarkFont, "Arial", 18, 400, 0, 0, 0x200);
 	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x200);
+	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0);
 }
 
 bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
@@ -133,6 +136,7 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 	{
 		hk::DrawString(10, 10, 255, 255, 255, 255, false, "Legacyhook built on " __DATE__, WatermarkFont);
 		hk::DrawString(10, 30, 255, 255, 255, 255, false, "https://github.com/Zordon1337/legacyhook", MediumFont);
+		CMenu::Draw(TitleFont);
 		if (I::engine->IsInGame() && vars::localPlayer)
 		{
 			for (int i = 1; i < 32; i++) {
