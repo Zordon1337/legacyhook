@@ -4,7 +4,7 @@ namespace vars {
 	CEntity* localPlayer = nullptr;
 	CVector ang;
 	bool bToggleMenu = true;
-
+	int iMenuIndex = 0;
 }
 
 namespace cfg {

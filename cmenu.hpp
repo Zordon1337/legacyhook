@@ -55,7 +55,8 @@ namespace CMenuElement {
         int buttonHeight = 40;
         int buttonX = x;
         int buttonY = y;
-
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
         const char* labels[] = { "Aim", "ESP", "Misc" };
 
 
@@ -63,7 +64,18 @@ namespace CMenuElement {
 
         for (int i = 0; i < 3; ++i) {
             I::surface->DrawSetColor(75, 75, 75, 255);
+
+			if (x1 > buttonX && x1 < buttonX + buttonWidth && x2 > buttonY && x2 < buttonY + buttonHeight) {
+				I::surface->DrawSetColor(100, 100, 100, 255);
+				if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+					vars::iMenuIndex = i;
+					I::surface->DrawSetColor(50, 50, 50, 255);
+				}
+			}
+
             I::surface->DrawFilledRect(buttonX, buttonY, buttonX + buttonWidth, buttonY + buttonHeight);
+
+
 
             int textLength = strlen(labels[i]);
             int textWidth = textLength * avgCharWidth;
@@ -95,15 +107,28 @@ namespace CMenu {
         
 
        
-        CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont,cfg::aim::bIsEnabled, "Aimbot");
-		NextPos.y += 20;
-		CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bUseAutofire, "Autofire");
-        NextPos.y += 20;
-		CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
-        NextPos.y += 20;
-        CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bBunnyHop, "Bhop");
-        NextPos.y += 20;
-        CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe");
+       
+        
+        switch (vars::iMenuIndex) {
+            case 0: {
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bIsEnabled, "Aimbot");
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bUseAutofire, "Autofire");
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
+                NextPos.y += 20;
+                break;
+            }
+            case 1: {
+                break;
+            }
+            case 2: {
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bBunnyHop, "Bhop");
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe");
+                break;
+            }
+        }
 
         CMenuBase::_DrawMenuOutline(w / 2 - MENU_WIDTH / 2, h / 2 - MENU_HEIGHT / 2, w / 2 + MENU_WIDTH / 2, h / 2 + MENU_HEIGHT / 2);
     }
