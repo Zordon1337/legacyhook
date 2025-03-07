@@ -58,6 +58,26 @@ public:
 		WEAPONTYPE_TABLET = 15,
 		WEAPONTYPE_MELEE = 16
 	};
+
+	enum MoveType_t
+	{
+		MOVETYPE_NONE = 0,
+		MOVETYPE_ISOMETRIC,
+		MOVETYPE_WALK,
+		MOVETYPE_STEP,
+		MOVETYPE_FLY,
+		MOVETYPE_FLYGRAVITY,
+		MOVETYPE_VPHYSICS,
+		MOVETYPE_PUSH,
+		MOVETYPE_NOCLIP,
+		MOVETYPE_LADDER,
+		MOVETYPE_OBSERVER,
+		MOVETYPE_CUSTOM,
+		MOVETYPE_LAST = MOVETYPE_CUSTOM,
+		MOVETYPE_MAX_BITS = 4
+	};
+
+
 	inline int32_t getFlags() noexcept
 	{
 		return *reinterpret_cast<int32_t*>(reinterpret_cast<uintptr_t>(this) + 0x100); // m_fFlags
@@ -104,5 +124,8 @@ public:
 	 {
 		 CVector ViewOffset = this->getVecView();
 		 return this->GetAbsOrigin() + ViewOffset;
+	 }
+	 int GetMoveType() {
+		 return *(int*)((DWORD)this + 0x258);
 	 }
 };

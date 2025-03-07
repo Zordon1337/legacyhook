@@ -153,6 +153,7 @@
     <ClCompile Include="minhook\trampoline.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aim.hpp" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="cmenu.hpp" />
     <ClInclude Include="CUserCmd.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="minhook\hde\table64.h" />
     <ClInclude Include="minhook\MinHook.h" />
     <ClInclude Include="minhook\trampoline.h" />
+    <ClInclude Include="Movement.hpp" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="vars.hpp" />
   </ItemGroup>

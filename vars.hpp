@@ -13,4 +13,8 @@ namespace cfg {
 		bool bUseAutofire = false;
 		bool bAntiAim = false;
 	}
+	namespace movement {
+		bool bBunnyHop = false;
+		bool bAutoStrafe = false;
+	}
 }

@@ -16,6 +16,9 @@
     <Filter Include="Source Files\SDK">
       <UniqueIdentifier>{4bf60d0b-83f2-40d8-8237-312c7ddf184e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Features">
+      <UniqueIdentifier>{36e6e68a-903d-4156-b51a-85129a796d84}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -127,6 +130,12 @@
     </ClInclude>
     <ClInclude Include="cmenu.hpp">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Aim.hpp">
+      <Filter>Source Files\Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Movement.hpp">
+      <Filter>Source Files\Features</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

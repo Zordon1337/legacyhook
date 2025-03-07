@@ -8,6 +8,10 @@
 #include <thread>
 #include <chrono>
 #include "cmenu.hpp"
+
+#include "Aim.hpp"
+#include "Movement.hpp"
+
 HFont WatermarkFont;
 HFont MediumFont;
 HFont TitleFont;
@@ -55,78 +59,27 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 		vars::localPlayer = localPlayer;
 		if (localPlayer)
 		{
-			if (!(localPlayer->getFlags() & CEntity::FL_ONGROUND)) {
-				if (!(localPlayer->getFlags() & CEntity::FL_ONGROUND))
-					cmd->buttons &= ~CUserCmd::IN_JUMP;
-				else
-					cmd->buttons |= CUserCmd::IN_JUMP;
-			}
+			
 
-			if (!cfg::aim::bUseAutofire) // reserved for autofire check
-			{
-				if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return false;
-			}
-			else
-			{
-				if ((cmd->buttons & CUserCmd::IN_ATTACK))
-					cmd->buttons = 0;
-			}
+			
 
 			CVector m_oldangle = cmd->viewangles;
 			float m_oldforward = cmd->forwardmove;
 			float m_oldsidemove = cmd->sidemove;
 
-			CVector bestAngle{};
-			float bestFov = 180.f;
-			CEntity* bestTarget = nullptr;
+			
+			
+			Features::Aim::RunAimbot(cmd);
 
-			for (int i = 1; i < 32; i++) {
-				auto player = I::entitylist->GetEntityFromIndex(i);
-				if (!player || player->IsDormant() || player == vars::localPlayer ||
-					player->getTeam() == vars::localPlayer->getTeam() || !player->isAlive())
-					continue;
+			Features::Aim::RunAntiAim(cmd);
 
-				CMatrix3x4 bones[128];
-				if (!player->SetupBones(bones, 128, 0x7FF00, I::globals->currentTime)) continue;
+			Features::Movement::RunBhop(cmd);
+			
+			Features::Movement::RunAutoStrafe(cmd);
 
-				CVector localEyePosition = vars::localPlayer->GetEyePosition();
+			
 
-				CTrace trace;
-				I::engineTrace->TraceRay(
-					CRay{ localEyePosition, bones[10].Origin() },
-					MASK_SHOT, { vars::localPlayer },
-					trace
-				);
-
-				if (!trace.entity || trace.fraction < 0.97f) continue;
-
-				CVector enemyAngle = (bones[10].Origin() - localEyePosition).ToAngle() - cmd->viewangles;
-				float fov = std::hypot(enemyAngle.x, enemyAngle.y);
-
-				if (fov < bestFov) {
-					bestFov = fov;
-					bestAngle = enemyAngle;
-					bestTarget = player;
-				}
-			}
-
-			if (bestTarget && cfg::aim::bIsEnabled) {
-				cmd->viewangles = cmd->viewangles + bestAngle;
-				I::engine->SetViewAngles(cmd->viewangles); 
-				cmd->buttons |= CUserCmd::IN_ATTACK; 
-			}
-
-			if (!(cmd->buttons & CUserCmd::IN_ATTACK) && cfg::aim::bAntiAim) {
-				
-				if(cmd->viewangles.y > 180.f)
-					cmd->viewangles.y = -180.f;
-				cmd->viewangles.x = 89;
-				cmd->viewangles.y = vars::ang.y+4;
-
-				vars::ang = cmd->viewangles;
-			}
 			meth::CorrectMovement(m_oldangle, cmd, m_oldforward, m_oldsidemove);
-
 		}
 
 	}
@@ -195,7 +148,7 @@ void __stdcall hk::FrameStage(client_frame_stage_t stage) {
 
 		break;
 	case FRAME_RENDER_START:
-		if (I::engine->IsInGame() && vars::localPlayer)
+		if (I::engine->IsInGame() && vars::localPlayer && cfg::aim::bAntiAim)
 		{
 			I::prediction->SetLocalViewAngles(vars::ang);
 		}
