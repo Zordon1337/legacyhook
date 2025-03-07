@@ -62,11 +62,15 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 					cmd->buttons |= CUserCmd::IN_JUMP;
 			}
 
-			if (!true) // reserved for autofire check
+			if (!cfg::aim::bUseAutofire) // reserved for autofire check
+			{
 				if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return false;
-				else
-					if ((cmd->buttons & CUserCmd::IN_ATTACK))
-						cmd->buttons = 0;
+			}
+			else
+			{
+				if ((cmd->buttons & CUserCmd::IN_ATTACK))
+					cmd->buttons = 0;
+			}
 
 			CVector m_oldangle = cmd->viewangles;
 			float m_oldforward = cmd->forwardmove;
@@ -106,13 +110,13 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 				}
 			}
 
-			if (bestTarget) {
+			if (bestTarget && cfg::aim::bIsEnabled) {
 				cmd->viewangles = cmd->viewangles + bestAngle;
 				I::engine->SetViewAngles(cmd->viewangles); 
 				cmd->buttons |= CUserCmd::IN_ATTACK; 
 			}
 
-			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) {
+			if (!(cmd->buttons & CUserCmd::IN_ATTACK) && cfg::aim::bAntiAim) {
 				
 				if(cmd->viewangles.y > 180.f)
 					cmd->viewangles.y = -180.f;
@@ -132,11 +136,14 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 
 void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool allowForce) noexcept
 {
+	if (GetAsyncKeyState(VK_INSERT) & 1)
+		vars::bToggleMenu = !vars::bToggleMenu;
 	if (panel == I::enginevgui->GetPanel(PANEL_TOOLS))
 	{
 		hk::DrawString(10, 10, 255, 255, 255, 255, false, "Legacyhook built on " __DATE__, WatermarkFont);
 		hk::DrawString(10, 30, 255, 255, 255, 255, false, "https://github.com/Zordon1337/legacyhook", MediumFont);
-		CMenu::Draw(TitleFont);
+		if (vars::bToggleMenu)
+			CMenu::Draw(TitleFont);
 		if (I::engine->IsInGame() && vars::localPlayer)
 		{
 			for (int i = 1; i < 32; i++) {

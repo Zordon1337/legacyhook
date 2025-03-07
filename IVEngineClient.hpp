@@ -29,7 +29,7 @@ public:
 	}
 	constexpr void GetScreenSize(std::int32_t& width, std::int32_t& height) noexcept
 	{
-		memory::Call<void>(this, 6, std::ref(width), std::ref(height));
+		memory::Call<void>(this, 5, std::ref(width), std::ref(height));
 	}
 
 };

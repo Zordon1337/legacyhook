@@ -1,51 +1,110 @@
 #pragma once
 #include "interfaces.h"
 
-namespace CMenu {
-    void Draw(HFont menufont) {
+#define MENU_WIDTH 400
+#define MENU_HEIGHT 500
+
+namespace CMenuBase {
+    void _DrawMenuOutline(int x, int y, int xx, int yy) {
+        I::surface->DrawSetColor(255, 255, 255, 255);
+        I::surface->DrawOutlinedRect(x, y, xx, yy);
+    }
+    void _DrawMenuBase(int x, int y, int xx, int yy) {
+
         I::surface->DrawSetColor(0, 0, 0, 255);
-        I::surface->DrawFilledRect(10, 10, 400, 500);
+        I::surface->DrawFilledRect(x, y, xx, yy);
+    }
+    void _DrawTitleBar(int x, int y, int xx, int yy, int menufont) {
 
         I::surface->DrawSetColor(50, 50, 50, 255);
-        I::surface->DrawFilledRect(10, 10, 400, 35);
-        hk::DrawString(15, 15, 255, 255, 255, 255, false, "legacyhook", menufont);
+        I::surface->DrawFilledRect(x, y, xx, yy);
+        hk::DrawString(x + 5, y + 5, 255, 255, 255, 255, false, "legacyhook", menufont);
+    }
+}
+namespace CMenuElement {
+    void Checkbox(int x, int y, HFont font, bool& toggle, const char* text) {
+        int x1, x2;
+
+		I::surface->GetCursorPos(x1, x2);
 
 
+		if (x1 > x && x1 < x + 10 && x2 > y && x2 < y + 10) {
+			if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                toggle = !toggle;
+			}
+            if (toggle) {
+                I::surface->DrawSetColor(50, 150, 255, 255);
+            }
+            else {
+                I::surface->DrawSetColor(200, 200, 255, 255);
+            }
+		}
+		else {
+            if (toggle) {
+                I::surface->DrawSetColor(30, 120, 220, 255);
+            }
+            else {
+                I::surface->DrawSetColor(180, 180, 180, 255);
+            }
+		}
+        I::surface->DrawFilledRect(x, y, x + 10, y + 10);
+        hk::DrawString(x + 20, y, 255, 255, 255, 255, false, text, font);
+    }
+    CVector DrawTabs(int x, int y, int menufont) {
         int buttonWidth = 133;
-        int buttonHeight = 40;  
-        int buttonX = 10;
-        int buttonY = 35;
+        int buttonHeight = 40;
+        int buttonX = x;
+        int buttonY = y;
 
         const char* labels[] = { "Aim", "ESP", "Misc" };
 
-        
-        int avgCharWidth = 8; 
+
+        int avgCharWidth = 8;
 
         for (int i = 0; i < 3; ++i) {
             I::surface->DrawSetColor(75, 75, 75, 255);
             I::surface->DrawFilledRect(buttonX, buttonY, buttonX + buttonWidth, buttonY + buttonHeight);
 
-            int textLength = strlen(labels[i]);  
-            int textWidth = textLength * avgCharWidth; 
-            int textHeight = 12;  
+            int textLength = strlen(labels[i]);
+            int textWidth = textLength * avgCharWidth;
+            int textHeight = 12;
 
-            int textX = buttonX + (buttonWidth - textWidth) / 2;  
-            int textY = buttonY + (buttonHeight - textHeight) / 2; 
+            int textX = buttonX + (buttonWidth - textWidth) / 2;
+            int textY = buttonY + (buttonHeight - textHeight) / 2;
 
             hk::DrawString(textX, textY, 255, 255, 255, 255, false, labels[i], menufont);
 
             buttonX += buttonWidth;
         }
+		return CVector(buttonX, buttonY);
+    }
+}
+namespace CMenu {
+    void Draw(HFont menufont) {
 
-        Checkbox(15, 50, menufont);
+		int w, h; I::engine->GetScreenSize(w, h);
 
-        I::surface->DrawSetColor(255, 255, 255, 255);
-        I::surface->DrawOutlinedRect(10, 10, 400, 500);
+		CVector NextPos = CVector((w / 2 - MENU_WIDTH / 2), (h / 2 - MENU_HEIGHT / 2));
+
+        CMenuBase::_DrawMenuBase(w / 2 - MENU_WIDTH / 2, h / 2 - MENU_HEIGHT / 2, w / 2 + MENU_WIDTH / 2, h / 2 + MENU_HEIGHT / 2);
+
+		CMenuBase::_DrawTitleBar(w / 2 - MENU_WIDTH / 2, h / 2 - MENU_HEIGHT / 2, w / 2 + MENU_WIDTH / 2, h / 2 - MENU_HEIGHT / 2 + 20, menufont);
+
+		auto r1 = CMenuElement::DrawTabs((w / 2 - MENU_WIDTH / 2), (h / 2 - MENU_HEIGHT / 2) + 20, menufont);
+        NextPos.y = r1.y + 40;
+        
+
+       
+        CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont,cfg::aim::bIsEnabled, "Aimbot");
+		NextPos.y += 20;
+		CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bUseAutofire, "Autofire");
+        NextPos.y += 20;
+		CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
+
+        CMenuBase::_DrawMenuOutline(w / 2 - MENU_WIDTH / 2, h / 2 - MENU_HEIGHT / 2, w / 2 + MENU_WIDTH / 2, h / 2 + MENU_HEIGHT / 2);
     }
 
-    void Checkbox(int x, int y, HFont font) {
-        I::surface->DrawSetColor(200, 200, 200);
-        I::surface->DrawFilledRect(x, y, x + 10, x + 10);
-        hk::DrawString(x + 20, y + 5, 255, 255, 255, 255, false, "testbox", font);
-    }
+  
+
+    
 }

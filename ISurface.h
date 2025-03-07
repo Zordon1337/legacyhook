@@ -129,4 +129,8 @@ public:
 	{
 		return memory::Call<bool>(this, 71, font, windowsFontName, tall, weight, blur, scanlines, flags,0,0);
 	}
+	void GetCursorPos(int& x, int& y)
+	{
+		memory::Call<void>(this, 99, std::ref(x), std::ref(y));
+	}
 };
