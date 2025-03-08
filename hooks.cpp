@@ -145,7 +145,6 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 
 void __stdcall hk::FrameStage(client_frame_stage_t stage) {
 	CVector ang = CVector(89.f, 89.f, 0.f);
-	std::cout << stage << std::endl;
 	switch (stage) {
 	case FRAME_UNDEFINED:                       break;
 	case FRAME_START:
