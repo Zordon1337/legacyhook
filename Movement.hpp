@@ -17,12 +17,14 @@ namespace Features::Movement {
 		
 		if (vars::localPlayer->getFlags() & CEntity::FL_ONGROUND) return;
 
-		if (cmd->mousedx > 1 || cmd->mousedx < -1) {
-			cmd->sidemove = cmd->mousedx < 0.f ? -450.f : 450.f;
+		if (cmd->mousedx < 0)
+		{
+			cmd->sidemove = -450.0f;
 		}
-		else {
-			cmd->viewangles.y = cmd->mousedx < 0.f ? -90.f : 90.f;
-			cmd->sidemove = cmd->command_number % 2 == 0 ? 450.f : -450.f;
+		if (cmd->mousedx > 0)
+		{
+			cmd->sidemove = 450.0f;
+
 		}
 
 	}
