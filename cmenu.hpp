@@ -130,7 +130,7 @@ namespace CMenu {
             case 2: {
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bBunnyHop, "Bhop");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe");
+				//CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe"); // temporarily hidden because broken
                 break;
             }
         }
