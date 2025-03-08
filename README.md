@@ -9,9 +9,10 @@ Exe build: 00:45:12 Nov 21 2014 (5858) (730)
 
 ## Current Features:
 ```
-Buggy aimbot
-Buggy autofire
+Aimbot
+Autofire(buggy)
 Box ESP
-Spinning AA
+Health Bar
+AntiAim
 Bunnyhop
 ```
