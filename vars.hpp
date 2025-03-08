@@ -12,6 +12,7 @@ namespace cfg {
 		bool bIsEnabled = false;
 		bool bUseAutofire = false;
 		bool bAntiAim = false;
+		int iAntiAimSpeed = 1;
 	}
 	namespace esp {
 		bool bBoxEsp = false;

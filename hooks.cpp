@@ -131,10 +131,10 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 
 				if (cfg::esp::bHealthBar) {
 					I::surface->DrawSetColor(0, 0, 0, 255);
-					I::surface->DrawOutlinedRect(left - 7, top.y - 2, left - 4, bottom.y + 2);
+					I::surface->DrawOutlinedRect(left - 6, top.y, left - 1, bottom.y);
 					const float health = player->getHealth() * 0.01f;
 					I::surface->DrawSetColor(255 * (1.f - health), 255 * health, 0, 255);
-					I::surface->DrawFilledRect(left - 5, top.y, left - 4, top.y + h * health);
+					I::surface->DrawFilledRect(left - 5, (bottom.y - h * health ) - 1, left - 2, bottom.y - 1);
 				}
 				
 			}

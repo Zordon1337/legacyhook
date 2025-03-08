@@ -64,7 +64,7 @@ namespace Features::Aim {
 			if (cmd->viewangles.y > 180.f)
 				cmd->viewangles.y = -180.f;
 			cmd->viewangles.x = 89;
-			cmd->viewangles.y = vars::ang.y + 4;
+			cmd->viewangles.y = vars::ang.y + cfg::aim::iAntiAimSpeed;
 
 			vars::ang = cmd->viewangles;
 

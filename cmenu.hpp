@@ -22,13 +22,32 @@ namespace CMenuBase {
     }
 }
 namespace CMenuElement {
+
+	void Slider(int x, int y, int xx, int yy, HFont font, int& value, int min, int max, const char* text) {
+		int x1, x2;
+		I::surface->GetCursorPos(x1, x2);
+		if (x1 > x && x1 < xx && x2 > y && x2 < yy) {
+			if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+				value = (x1 - x) / (float)(xx - x) * (max - min) + min;
+			}
+		}
+		I::surface->DrawSetColor(50, 50, 50, 255);
+		I::surface->DrawFilledRect(x, y, xx, yy);
+		I::surface->DrawSetColor(255, 255, 255, 255);
+		I::surface->DrawOutlinedRect(x, y, xx, yy);
+		I::surface->DrawSetColor(100, 100, 100, 255);
+		I::surface->DrawFilledRect(x + 1, y + 1, x + 1 + (xx - x - 2) * ((value - min) / (float)(max - min)), yy - 1);
+		hk::DrawString(x + 5, y - 15, 255, 255, 255, 255, false, text, font);
+		hk::DrawString(xx - 5 - strlen(std::to_string(value).c_str()) * 8, y - 15, 255, 255, 255, 255, false, std::to_string(value).c_str(), font);
+	}
+
     void Checkbox(int x, int y, HFont font, bool& toggle, const char* text) {
         int x1, x2;
 
 		I::surface->GetCursorPos(x1, x2);
 
 
-		if (x1 > x && x1 < x + 10 && x2 > y && x2 < y + 10) {
+		if (x1 > x && x1 < x + 15 && x2 > y && x2 < y + 15) {
 			if (GetAsyncKeyState(VK_LBUTTON) & 1) {
                 toggle = !toggle;
 			}
@@ -47,7 +66,7 @@ namespace CMenuElement {
                 I::surface->DrawSetColor(180, 180, 180, 255);
             }
 		}
-        I::surface->DrawFilledRect(x, y, x + 10, y + 10);
+        I::surface->DrawFilledRect(x, y, x + 15, y + 15);
         hk::DrawString(x + 20, y, 255, 255, 255, 255, false, text, font);
     }
     CVector DrawTabs(int x, int y, int menufont) {
@@ -116,8 +135,8 @@ namespace CMenu {
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bUseAutofire, "Autofire");
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
-                NextPos.y += 20;
-
+                NextPos.y += 30;
+                CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::aim::iAntiAimSpeed, 1, 15, "AA Speed");
                 break;
             }
             case 1: {
