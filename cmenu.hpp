@@ -117,9 +117,14 @@ namespace CMenu {
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
                 NextPos.y += 20;
+
                 break;
             }
             case 1: {
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bBoxEsp, "Box ESP");
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bHealthBar, "Health Bar");
+                NextPos.y += 20;
                 break;
             }
             case 2: {

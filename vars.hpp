@@ -13,6 +13,10 @@ namespace cfg {
 		bool bUseAutofire = false;
 		bool bAntiAim = false;
 	}
+	namespace esp {
+		bool bBoxEsp = false;
+		bool bHealthBar = false;
+	}
 	namespace movement {
 		bool bBunnyHop = false;
 		bool bAutoStrafe = false;

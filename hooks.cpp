@@ -121,10 +121,21 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				const float w = h * 0.3f;
 				const auto left = static_cast<int>(top.x - w);
 				const auto right = static_cast<int>(top.x + w);
-				I::surface->DrawSetColor(255, 255, 255, 255);
-				I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
 				
+				if (cfg::esp::bBoxEsp)
+				{
+					I::surface->DrawSetColor(255, 255, 255, 255);
+					I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
 
+				}
+
+				if (cfg::esp::bHealthBar) {
+					I::surface->DrawSetColor(0, 0, 0, 255);
+					I::surface->DrawOutlinedRect(left - 7, top.y - 2, left - 4, bottom.y + 2);
+					const float health = player->getHealth() * 0.01f;
+					I::surface->DrawSetColor(255 * (1.f - health), 255 * health, 0, 255);
+					I::surface->DrawFilledRect(left - 5, top.y, left - 4, top.y + h * health);
+				}
 				
 			}
 		}
