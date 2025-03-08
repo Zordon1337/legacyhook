@@ -12,8 +12,8 @@ namespace Features::Aim {
 		if (!cfg::aim::bUseAutofire)
 		{
 			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return;
-			else if ((cmd->buttons & CUserCmd::IN_ATTACK)) cmd->buttons = 0;
-		}
+			
+		} else { if ((cmd->buttons & CUserCmd::IN_ATTACK)) cmd->buttons = 0; }
 		CVector bestAngle{};
 		float bestFov = 180.f;
 		CEntity* bestTarget = nullptr;
