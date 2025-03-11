@@ -11,10 +11,12 @@
 
 #include "Aim.hpp"
 #include "Movement.hpp"
+#define POW(x) ((x)*(x))
 
 HFont WatermarkFont;
 HFont MediumFont;
 HFont TitleFont;
+HFont VelocityFont;
 void hk::Init() {
 
 	if (MH_Initialize())
@@ -40,11 +42,12 @@ void hk::Init() {
 	WatermarkFont = I::surface->CreateFont();
 	MediumFont = I::surface->CreateFont();
 	TitleFont = I::surface->CreateFont();
-	I::surface->SetFontGlyphSet(WatermarkFont, "Arial", 18, 400, 0, 0, 0x200);
-	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x200);
-	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0);
+	VelocityFont = I::surface->CreateFont();
+	I::surface->SetFontGlyphSet(WatermarkFont, "Arial", 18, 400, 0, 0, 0x010);
+	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x010);
+	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0x010);
+	I::surface->SetFontGlyphSet(VelocityFont, "Tahoma", 32, 900, 0, 0, 0x010);
 }
-
 bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 {
 	if (!cmd->command_number)
@@ -74,12 +77,15 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 			Features::Aim::RunAntiAim(cmd);
 
 			Features::Movement::RunBhop(cmd);
-			
+
 			Features::Movement::RunAutoStrafe(cmd);
+			
 
 			
 
 			meth::CorrectMovement(m_oldangle, cmd, m_oldforward, m_oldsidemove);
+
+			vars::ang = cmd->viewangles;
 		}
 
 	}
@@ -134,17 +140,44 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 					I::surface->DrawOutlinedRect(left - 6, top.y, left - 1, bottom.y);
 					const float health = player->getHealth() * 0.01f;
 					I::surface->DrawSetColor(255 * (1.f - health), 255 * health, 0, 255);
-					I::surface->DrawFilledRect(left - 5, (bottom.y - h * health ) - 1, left - 2, bottom.y - 1);
+					I::surface->DrawFilledRect(left - 5, (bottom.y - h * health ), left - 2, bottom.y);
 				}
 				
 			}
+		}
+		if (cfg::esp::bDrawVelocity && vars::localPlayer && vars::localPlayer->isAlive()) {
+			int w, h;
+			I::engine->GetScreenSize(w, h);
+
+
+			auto vel = vars::localPlayer->getVelocity();
+
+			DrawString((w / 2) - 3, h - cfg::esp::iVelocityYPos, 255, 255, 255, 255, false, std::to_string((int)(sqrt(POW(vel.x) + POW(vel.y)))).c_str(), VelocityFont);
 		}
 	}
 	PaintTraverseOriginal(I::panel, panel, forceRepaint, allowForce);
 }
 
 void __stdcall hk::FrameStage(client_frame_stage_t stage) {
-	CVector ang = CVector(89.f, 89.f, 0.f);
+
+	CVector vecAngles;
+	I::engine->GetViewAngles(vecAngles);
+	if (vars::localPlayer && cfg::esp::bThirdPerson) {
+		if (!I::input->m_fCameraInThirdPerson) {
+			I::input->m_fCameraInThirdPerson = true;
+			I::input->m_vecCameraOffset = CVector(vecAngles.x, vecAngles.y, 300);
+			auto engine = (DWORD)GetModuleHandleA("engine.dll");
+			*reinterpret_cast<uintptr_t*>(engine + 0x514018) = 1;
+		}
+	}
+	else {
+		if (I::input->m_fCameraInThirdPerson) {
+			I::input->m_fCameraInThirdPerson = false;
+			I::input->m_vecCameraOffset = vecAngles;
+			auto engine = (DWORD)GetModuleHandleA("engine.dll");
+			*reinterpret_cast<uintptr_t*>(engine + 0x514018) = 0;
+		}
+	}
 	switch (stage) {
 	case FRAME_UNDEFINED:                       break;
 	case FRAME_START:
@@ -158,11 +191,12 @@ void __stdcall hk::FrameStage(client_frame_stage_t stage) {
 
 		break;
 	case FRAME_RENDER_START:
-		if (I::engine->IsInGame() && vars::localPlayer && cfg::aim::bAntiAim)
+		if (I::engine->IsInGame() && vars::localPlayer && cfg::esp::bThirdPerson)
 		{
 			I::prediction->SetLocalViewAngles(vars::ang);
 		}
 		break;
+		
 	case FRAME_RENDER_END:                      break;
 	default:                                    break;
 	}

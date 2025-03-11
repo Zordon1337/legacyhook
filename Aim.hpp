@@ -13,9 +13,9 @@ namespace Features::Aim {
 		{
 			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return;
 			
-		} else { if ((cmd->buttons & CUserCmd::IN_ATTACK)) cmd->buttons = 0; }
+		} //else { if ((cmd->buttons & CUserCmd::IN_ATTACK)) cmd->buttons = 0; }
 		CVector bestAngle{};
-		float bestFov = 180.f;
+		float bestFov = cfg::aim::flAimbotFov;
 		CEntity* bestTarget = nullptr;
 
 		for (int i = 1; i < 32; i++) {
@@ -56,6 +56,7 @@ namespace Features::Aim {
 			
 		}
 
+
 	}
 
 	void RunAntiAim(CUserCmd* cmd) {
@@ -66,7 +67,6 @@ namespace Features::Aim {
 			cmd->viewangles.x = 89;
 			cmd->viewangles.y = vars::ang.y + cfg::aim::iAntiAimSpeed;
 
-			vars::ang = cmd->viewangles;
 
 		}
 	}

@@ -40,7 +40,23 @@ namespace CMenuElement {
 		hk::DrawString(x + 5, y - 15, 255, 255, 255, 255, false, text, font);
 		hk::DrawString(xx - 5 - strlen(std::to_string(value).c_str()) * 8, y - 15, 255, 255, 255, 255, false, std::to_string(value).c_str(), font);
 	}
-
+    void SliderFloat(int x, int y, int xx, int yy, HFont font, float& value, float min, float max, const char* text) {
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
+        if (x1 > x && x1 < xx && x2 > y && x2 < yy) {
+            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                value = (x1 - x) / (float)(xx - x) * (max - min) + min;
+            }
+        }
+        I::surface->DrawSetColor(50, 50, 50, 255);
+        I::surface->DrawFilledRect(x, y, xx, yy);
+        I::surface->DrawSetColor(255, 255, 255, 255);
+        I::surface->DrawOutlinedRect(x, y, xx, yy);
+        I::surface->DrawSetColor(100, 100, 100, 255);
+        I::surface->DrawFilledRect(x + 1, y + 1, x + 1 + (xx - x - 2) * ((value - min) / (float)(max - min)), yy - 1);
+        hk::DrawString(x + 5, y - 15, 255, 255, 255, 255, false, text, font);
+        hk::DrawString(xx - 5 - strlen(std::to_string(value).c_str()) * 8, y - 15, 255, 255, 255, 255, false, std::to_string(value).c_str(), font);
+    }
     void Checkbox(int x, int y, HFont font, bool& toggle, const char* text) {
         int x1, x2;
 
@@ -131,8 +147,12 @@ namespace CMenu {
         switch (vars::iMenuIndex) {
             case 0: {
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bIsEnabled, "Aimbot");
+                NextPos.y += 30;
+                CMenuElement::SliderFloat(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::aim::flAimbotFov, 0.1, 180, "Aimbot Fov");
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bUseAutofire, "Autofire");
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bSilentAim, "Silent Aim");
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
                 NextPos.y += 30;
@@ -144,12 +164,20 @@ namespace CMenu {
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bHealthBar, "Health Bar");
                 NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bThirdPerson, "Third Person");
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bDrawVelocity, "Draw Velocity");
+                NextPos.y += 20;
+                if (cfg::esp::bDrawVelocity) {
+                    NextPos.y += 10;
+                    CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::esp::iVelocityYPos, 1, 300, "Velocity Y Pos");
+                }
                 break;
             }
             case 2: {
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bBunnyHop, "Bhop");
                 NextPos.y += 20;
-				//CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe"); // temporarily hidden because broken
+				CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe"); // temporarily hidden because broken
                 break;
             }
         }

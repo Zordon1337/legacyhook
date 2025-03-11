@@ -8,6 +8,7 @@
 #include "Globals.h"
 #include "IEngineTrace.h"
 #include "IPrediction.h"
+#include "CInput..h"
 namespace I {
 	void Init();
 	void* baseclient;
@@ -21,6 +22,7 @@ namespace I {
 	IGlobalVars* globals = nullptr;
 	IEngineTrace* engineTrace = nullptr;
 	IPrediction* prediction = nullptr;
+	CInput* input = nullptr;
 	void* Capture(const char* moduleName, const char* interfaceName) noexcept;
 
 	template <typename Interface>

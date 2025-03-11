@@ -15,16 +15,12 @@ namespace Features::Movement {
 	void RunAutoStrafe(CUserCmd* cmd) {
 		if (!cfg::movement::bAutoStrafe) return;
 		
-		if (vars::localPlayer->getFlags() & CEntity::FL_ONGROUND) return;
 
-		if (cmd->mousedx < 0)
-		{
-			cmd->sidemove = -450.0f;
-		}
-		if (cmd->mousedx > 0)
-		{
-			cmd->sidemove = 450.0f;
-
+		if (!(vars::localPlayer->getFlags() & CEntity::FL_ONGROUND)) {
+			if (cmd->mousedx < 0)
+				cmd->sidemove = -450.0f;
+			if (cmd->mousedx > 0)
+				cmd->sidemove = 450.0f;
 		}
 
 	}

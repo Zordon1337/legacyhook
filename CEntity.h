@@ -82,6 +82,11 @@ public:
 	{
 		return *reinterpret_cast<int32_t*>(reinterpret_cast<uintptr_t>(this) + 0x100); // m_fFlags
 	}
+
+	inline CVector getVelocity() noexcept
+	{
+		return *reinterpret_cast<CVector*>(reinterpret_cast<uintptr_t>(this) + 0x110); // m_vecVelocity
+	}
 	inline int getTeam() noexcept
 	{
 		return *reinterpret_cast<int*>(reinterpret_cast<uintptr_t>(this) + 0xF0); // m_iTeamNum
@@ -98,10 +103,6 @@ public:
 		return memory::Call<bool>(this + 0x8, 9);
 	}
 
-	constexpr bool IsAlive() noexcept
-	{
-		return memory::Call<bool>(this, 156);
-	}
 	constexpr const CVector& GetAbsOrigin() noexcept
 	{
 		return memory::Call<const CVector&>(this, 10);

@@ -137,5 +137,8 @@
     <ClInclude Include="Movement.hpp">
       <Filter>Source Files\Features</Filter>
     </ClInclude>
+    <ClInclude Include="CInput..h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

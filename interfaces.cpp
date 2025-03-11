@@ -26,6 +26,8 @@ void I::Init() {
 	std::cout << "engineTrace: " << I::engineTrace << std::endl;
 	I::prediction = I::Capture<IPrediction>("client.dll", "VClientPrediction001");
 	std::cout << "prediction: " << I::prediction << std::endl;
+	I::input = *(CInput**)((*(DWORD**)baseclient)[15] + 0x1);
+	std::cout << "input: " << I::input << std::endl;
 }
 
 void* I::Capture(const char* moduleName, const char* interfaceName) noexcept
