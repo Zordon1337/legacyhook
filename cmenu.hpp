@@ -57,7 +57,7 @@ namespace CMenuElement {
         hk::DrawString(x + 5, y - 15, 255, 255, 255, 255, false, text, font);
         hk::DrawString(xx - 5 - strlen(std::to_string(value).c_str()) * 8, y - 15, 255, 255, 255, 255, false, std::to_string(value).c_str(), font);
     }
-    void Checkbox(int x, int y, HFont font, bool& toggle, const char* text) {
+    void Checkbox(int x, int y, HFont font, bool& toggle, std::string text) {
         int x1, x2;
 
 		I::surface->GetCursorPos(x1, x2);
@@ -83,7 +83,8 @@ namespace CMenuElement {
             }
 		}
         I::surface->DrawFilledRect(x, y, x + 15, y + 15);
-        hk::DrawString(x + 20, y, 255, 255, 255, 255, false, text, font);
+        auto siz = I::surface->get_text_size(font, text);
+        hk::DrawString(x + 20, y + 2, 255, 255, 255, 255, false, text.c_str(), font);
     }
     CVector DrawTabs(int x, int y, int menufont) {
         int buttonWidth = 133;
@@ -127,7 +128,7 @@ namespace CMenuElement {
     }
 }
 namespace CMenu {
-    void Draw(HFont menufont) {
+    void Draw(HFont menufont, HFont CheckboxFont) {
 
 		int w, h; I::engine->GetScreenSize(w, h);
 
@@ -146,27 +147,27 @@ namespace CMenu {
         
         switch (vars::iMenuIndex) {
             case 0: {
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bIsEnabled, "Aimbot");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bIsEnabled, "Aimbot");
                 NextPos.y += 30;
                 CMenuElement::SliderFloat(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::aim::flAimbotFov, 0.1, 180, "Aimbot Fov");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bUseAutofire, "Autofire");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bUseAutofire, "Autofire");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bSilentAim, "Silent Aim");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bSilentAim, "Silent Aim");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::aim::bAntiAim, "Anti Aim");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bAntiAim, "Anti Aim");
                 NextPos.y += 30;
                 CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::aim::iAntiAimSpeed, 1, 15, "AA Speed");
                 break;
             }
             case 1: {
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bBoxEsp, "Box ESP");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::esp::bBoxEsp, "Box ESP");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bHealthBar, "Health Bar");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::esp::bHealthBar, "Health Bar");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bThirdPerson, "Third Person");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::esp::bThirdPerson, "Third Person");
                 NextPos.y += 20;
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::esp::bDrawVelocity, "Draw Velocity");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::esp::bDrawVelocity, "Draw Velocity");
                 NextPos.y += 20;
                 if (cfg::esp::bDrawVelocity) {
                     NextPos.y += 10;
@@ -175,9 +176,11 @@ namespace CMenu {
                 break;
             }
             case 2: {
-                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bBunnyHop, "Bhop");
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::movement::bBunnyHop, "Bhop");
                 NextPos.y += 20;
-				CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, menufont, cfg::movement::bAutoStrafe, "Auto Strafe"); // temporarily hidden because broken
+				CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::movement::bAutoStrafe, "Auto Strafe"); // temporarily hidden because broken
+                NextPos.y += 20;
+                CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::misc::bSniperCrosshair, "Sniper Crosshair");
                 break;
             }
         }

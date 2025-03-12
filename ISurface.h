@@ -143,6 +143,6 @@ public:
 		static int w, h;
 
 		this->GetTextSize(font, wstr, w, h);
-		return { static_cast<float>(w), static_cast<float>(h) };
+		return CVector(w,h);
 	}
 };

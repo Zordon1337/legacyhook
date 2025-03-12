@@ -84,6 +84,9 @@ namespace cfg {
 		bool bBunnyHop = false;
 		bool bAutoStrafe = false;
 	}
+	namespace misc {
+		bool bSniperCrosshair = false;
+	}
 	namespace skins {
 		int iOrginalCtKnife = 0;
 		int iOrginalTKnife = 0;

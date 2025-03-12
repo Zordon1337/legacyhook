@@ -19,7 +19,7 @@ HFont WatermarkFont;
 HFont MediumFont;
 HFont TitleFont;
 HFont VelocityFont;
-
+HFont CheckboxFont;
 void ViewModelIndexProxy(const CRecvProxyData* data, void* struc, void* Out) {
 	auto dat = const_cast<CRecvProxyData*>(data);
 
@@ -65,11 +65,12 @@ void hk::Init() {
 	MediumFont = I::surface->CreateFont();
 	TitleFont = I::surface->CreateFont();
 	VelocityFont = I::surface->CreateFont();
-	I::surface->SetFontGlyphSet(WatermarkFont, "Arial", 18, 400, 0, 0, 0x010);
+	CheckboxFont = I::surface->CreateFont();
+	I::surface->SetFontGlyphSet(WatermarkFont, "Tahoma", 22, 400, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(VelocityFont, "Tahoma", 32, 900, 0, 0, 0x010);
-
+	I::surface->SetFontGlyphSet(CheckboxFont, "Tahoma", 12, 900, 0, 0, 0x010);
 	for (ClientClass* cl = I::baseclient->GetAllClasses(); cl; cl = cl->m_pNext) {
 		if (!strcmp(cl->m_pNetworkName, "CBaseViewModel")) {
 			RecvTable* cltable = cl->m_pRecvTable;
@@ -141,7 +142,7 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 		if (vars::bToggleMenu)
 		{
 
-			CMenu::Draw(TitleFont);
+			CMenu::Draw(TitleFont,CheckboxFont);
 			CMenu::DrawSkinChanger(TitleFont);
 		}
 			
@@ -197,6 +198,13 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 
 			auto textsize = I::surface->get_text_size(VelocityFont, text);
 			DrawString((w / 2) - (textsize.x / 2), h - cfg::esp::iVelocityYPos - (textsize.y / 2), 255, 255, 255, 255, false, text.c_str(), VelocityFont);
+		}
+		if (cfg::misc::bSniperCrosshair) {
+			int w, h;
+			I::engine->GetScreenSize(w, h);
+			I::surface->DrawSetColor(255, 255, 255, 255);
+			I::surface->DrawLine((w / 2) - 10, h / 2, (w / 2) + 10, h / 2);
+			I::surface->DrawLine(w / 2, (h / 2) - 10, w / 2, (h / 2) + 10);
 		}
 	}
 	PaintTraverseOriginal(I::panel, panel, forceRepaint, allowForce);
