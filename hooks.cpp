@@ -193,8 +193,10 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 
 
 			auto vel = vars::localPlayer->getVelocity();
+			auto text = std::to_string((int)(sqrt(POW(vel.x) + POW(vel.y))));
 
-			DrawString((w / 2) - 3, h - cfg::esp::iVelocityYPos, 255, 255, 255, 255, false, std::to_string((int)(sqrt(POW(vel.x) + POW(vel.y)))).c_str(), VelocityFont);
+			auto textsize = I::surface->get_text_size(VelocityFont, text);
+			DrawString((w / 2) - (textsize.x / 2), h - cfg::esp::iVelocityYPos - (textsize.y / 2), 255, 255, 255, 255, false, text.c_str(), VelocityFont);
 		}
 	}
 	PaintTraverseOriginal(I::panel, panel, forceRepaint, allowForce);
@@ -313,7 +315,11 @@ void hk::ApplySkins() {
 				*Weapon->GetFallbackWear() = 0;
 				break;
 			}
+			case WEAPON_M4A1_SILENCER: {
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_M4A1_SILENCER, "cu_m4a1s_cyrex").paintkit_id;
+			}
 		}
 		*Weapon->GetItemIDHigh() = -1;
 	}
 }
+

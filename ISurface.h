@@ -1,6 +1,6 @@
 #pragma once
+#include <string>
 #include "IVDebugOverlay.h"
-
 #ifdef CreateFont
 #undef CreateFont
 #endif
@@ -132,5 +132,17 @@ public:
 	void GetCursorPos(int& x, int& y)
 	{
 		memory::Call<void>(this, 99, std::ref(x), std::ref(y));
+	}
+	void GetTextSize(unsigned long hFont, const wchar_t* wText, int& iWide, int& iTall)
+	{
+		memory::Call<void>(this, 78, hFont, wText, std::ref(iWide), std::ref(iTall));
+	}
+	CVector get_text_size(unsigned long font, std::string text) {
+		std::wstring a(text.begin(), text.end());
+		const wchar_t* wstr = a.c_str();
+		static int w, h;
+
+		this->GetTextSize(font, wstr, w, h);
+		return { static_cast<float>(w), static_cast<float>(h) };
 	}
 };
