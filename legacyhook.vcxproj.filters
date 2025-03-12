@@ -86,9 +86,6 @@
     <ClInclude Include="minhook\trampoline.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EntityList.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="CUserCmd.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
@@ -147,6 +144,12 @@
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="IBaseClientDLL.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="skins.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityList.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
   </ItemGroup>

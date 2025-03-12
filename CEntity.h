@@ -135,6 +135,10 @@ public:
 	 int GetMoveType() {
 		 return *(int*)((DWORD)this + 0x258);
 	 }
+
+	 inline int* getMusicKit() {
+		 return (int*)((DWORD)this + 0x1D9C);
+	 }
 };
 
 class CBaseAttributableItem : CEntity {

@@ -12,6 +12,7 @@
 #include "Aim.hpp"
 #include "Movement.hpp"
 #include "IBaseClientDLL.h"
+#include "skins.hpp"
 #define POW(x) ((x)*(x))
 
 HFont WatermarkFont;
@@ -100,7 +101,7 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 		{
 			
 
-			
+
 
 			CVector m_oldangle = cmd->viewangles;
 			float m_oldforward = cmd->forwardmove;
@@ -279,16 +280,28 @@ void hk::ApplySkins() {
 		if (!Weapon) break;
 
 		int WeaponIndex = *Weapon->GetItemDefinitionIndex();
-		if (WeaponIndex == WEAPON_KNIFE)
+		switch (WeaponIndex)
 		{
-
-			*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_KARAMBIT;
+			case WEAPON_KNIFE_T: {
+				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_M9_BAYONET;
+				break;
+			}
+			case WEAPON_KNIFE: {
+				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_KARAMBIT;
+				break;
+			}
+			case WEAPON_AK47: {
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_AK47, "hy_ak47lam_blue").paintkit_id;
+				*Weapon->GetFallbackWear() = 0;
+				break;
+			}
+			case WEAPON_AWP: {
+				break;
+			}
+			case WEAPON_SSG08: {
+				break;
+			}
 		}
-		if (WeaponIndex == WEAPON_KNIFE_T)
-		{
-			*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_M9_BAYONET;
-		}
-
 		*Weapon->GetItemIDHigh() = -1;
 	}
 }

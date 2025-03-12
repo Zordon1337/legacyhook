@@ -1,6 +1,7 @@
 #pragma once
 #include "CEntity.h"
 #include "Recv.h"
+#include <unordered_map>
 namespace vars {
 	CEntity* localPlayer = nullptr;
 	CVector ang;
