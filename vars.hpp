@@ -1,7 +1,6 @@
 #pragma once
 #include "CEntity.h"
 #include "Recv.h"
-#include <unordered_map>
 namespace vars {
 	CEntity* localPlayer = nullptr;
 	CVector ang;
@@ -90,5 +89,6 @@ namespace cfg {
 		int iOrginalTKnife = 0;
 		int iCustomCtKnife = 0;
 		int iCustomTKnife = 0;
+
 	}
 }

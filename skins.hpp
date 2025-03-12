@@ -508,3 +508,7 @@ PaintKit get_paintkit_by_weapon_type_and_skin(const std::vector<PaintKit>& paint
     }
     return PaintKit(0,"",0);
 }
+
+
+
+std::unordered_map<int, PaintKit> skins;

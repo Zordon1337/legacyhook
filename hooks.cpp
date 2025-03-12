@@ -139,7 +139,12 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 		hk::DrawString(10, 10, 255, 255, 255, 255, false, "Legacyhook built on " __DATE__, WatermarkFont);
 		hk::DrawString(10, 30, 255, 255, 255, 255, false, "https://github.com/Zordon1337/legacyhook", MediumFont);
 		if (vars::bToggleMenu)
+		{
+
 			CMenu::Draw(TitleFont);
+			CMenu::DrawSkinChanger(TitleFont);
+		}
+			
 		if (I::engine->IsInGame() && vars::localPlayer)
 		{
 			for (int i = 1; i < 32; i++) {

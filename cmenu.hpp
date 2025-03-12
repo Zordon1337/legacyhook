@@ -185,7 +185,22 @@ namespace CMenu {
         CMenuBase::_DrawMenuOutline(w / 2 - MENU_WIDTH / 2, h / 2 - MENU_HEIGHT / 2, w / 2 + MENU_WIDTH / 2, h / 2 + MENU_HEIGHT / 2);
     }
 
-  
+    void DrawSkinChanger(HFont menufont) {
+
+        int w, h; I::engine->GetScreenSize(w, h);
+
+        CVector NextPos = CVector((w / 2 + 250), (h / 2 - MENU_HEIGHT / 2));
+
+        CMenuBase::_DrawMenuBase((w / 2)+ 250, (h / 2 - MENU_HEIGHT / 2), (w / 2 + MENU_WIDTH / 2) + 400, h / 2 + MENU_HEIGHT / 2);
+
+        CMenuBase::_DrawTitleBar((w / 2) + 250, (h / 2 - MENU_HEIGHT / 2), (w / 2 + MENU_WIDTH / 2) + 400, (h / 2) + 20, menufont);
+
+
+
+
+
+        CMenuBase::_DrawMenuOutline((w / 2) + 250, (h / 2 - MENU_HEIGHT / 2), (w / 2 + MENU_WIDTH / 2) +400, h / 2 + MENU_HEIGHT / 2);
+    }
 
     
 }
