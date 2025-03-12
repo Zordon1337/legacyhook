@@ -289,10 +289,12 @@ void hk::ApplySkins() {
 		{
 			case WEAPON_KNIFE_T: {
 				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_M9_BAYONET;
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_KNIFE_M9_BAYONET, "so_night").paintkit_id;
 				break;
 			}
 			case WEAPON_KNIFE: {
 				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_KARAMBIT;
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_KNIFE_KARAMBIT, "sp_tape_urban").paintkit_id;
 				break;
 			}
 			case WEAPON_AK47: {
