@@ -1,6 +1,6 @@
 #pragma once
 #include <Windows.h>
-#include "IVEngineClient.hpp"
+#include "IVEngineClient.h"
 #include "EntityList.h"
 #include "ISurface.h"
 #include "IVPanel.h"
@@ -9,6 +9,7 @@
 #include "IEngineTrace.h"
 #include "IPrediction.h"
 #include "CInput..h"
+#include "IVModelInfoClient.h"
 namespace I {
 	void Init();
 	void* baseclient;
@@ -23,6 +24,8 @@ namespace I {
 	IEngineTrace* engineTrace = nullptr;
 	IPrediction* prediction = nullptr;
 	CInput* input = nullptr;
+	IVModelInfoClient* modelinfo = nullptr;
+
 	void* Capture(const char* moduleName, const char* interfaceName) noexcept;
 
 	template <typename Interface>

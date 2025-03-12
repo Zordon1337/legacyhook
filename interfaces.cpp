@@ -2,9 +2,10 @@
 #include "interfaces.h"
 #include <iostream>
 #include "Globals.h"
+#include "IBaseClientDLL.h"
 
 void I::Init() {
-	I::baseclient = I::Capture("client.dll", "VClient016");
+	I::baseclient = I::Capture<IBaseClientDLL>("client.dll", "VClient016");
 	std::cout << "baseclient: " << I::baseclient << std::endl;
 	I::clientmode = **reinterpret_cast<void***>((*reinterpret_cast<unsigned int**>(baseclient))[10] + 5);
 	std::cout << "clientmode: " << I::clientmode << std::endl;
@@ -28,6 +29,8 @@ void I::Init() {
 	std::cout << "prediction: " << I::prediction << std::endl;
 	I::input = *(CInput**)((*(DWORD**)baseclient)[15] + 0x1);
 	std::cout << "input: " << I::input << std::endl;
+	I::modelinfo = I::Capture<IVModelInfoClient>("engine.dll", "VModelInfoClient004");
+	std::cout << "modelinfo: " << I::modelinfo << std::endl;
 }
 
 void* I::Capture(const char* moduleName, const char* interfaceName) noexcept

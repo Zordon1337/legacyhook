@@ -98,7 +98,7 @@
     <ClInclude Include="Structs.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="IVEngineClient.hpp">
+    <ClInclude Include="IVEngineClient.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="IVPanel.h">
@@ -138,6 +138,15 @@
       <Filter>Source Files\Features</Filter>
     </ClInclude>
     <ClInclude Include="CInput..h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Recv.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="IVModelInfoClient.h">
+      <Filter>Source Files\SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="IBaseClientDLL.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
   </ItemGroup>

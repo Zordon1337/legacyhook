@@ -162,12 +162,14 @@
     <ClInclude Include="EntityList.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="hooks.h" />
+    <ClInclude Include="IBaseClientDLL.h" />
     <ClInclude Include="IEngineTrace.h" />
     <ClInclude Include="interfaces.h" />
     <ClInclude Include="IPrediction.h" />
     <ClInclude Include="ISurface.h" />
     <ClInclude Include="IVDebugOverlay.h" />
-    <ClInclude Include="IVEngineClient.hpp" />
+    <ClInclude Include="IVEngineClient.h" />
+    <ClInclude Include="IVModelInfoClient.h" />
     <ClInclude Include="IVPanel.h" />
     <ClInclude Include="memory.h" />
     <ClInclude Include="meth.h" />
@@ -180,6 +182,7 @@
     <ClInclude Include="minhook\MinHook.h" />
     <ClInclude Include="minhook\trampoline.h" />
     <ClInclude Include="Movement.hpp" />
+    <ClInclude Include="Recv.h" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="vars.hpp" />
   </ItemGroup>
