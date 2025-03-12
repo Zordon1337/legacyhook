@@ -10,9 +10,10 @@
 #include "IPrediction.h"
 #include "CInput..h"
 #include "IVModelInfoClient.h"
+#include "IBaseClientDLL.h"
 namespace I {
 	void Init();
-	void* baseclient;
+	IBaseClientDLL* baseclient;
 	void* clientmode;
 	IVEngineClient* engine;
 	IClientEntityList* entitylist;

@@ -11,12 +11,33 @@
 
 #include "Aim.hpp"
 #include "Movement.hpp"
+#include "IBaseClientDLL.h"
 #define POW(x) ((x)*(x))
 
 HFont WatermarkFont;
 HFont MediumFont;
 HFont TitleFont;
 HFont VelocityFont;
+
+void ViewModelIndexProxy(const CRecvProxyData* data, void* struc, void* Out) {
+	auto dat = const_cast<CRecvProxyData*>(data);
+
+	cfg::skins::iCustomCtKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_karam.mdl");
+	cfg::skins::iCustomTKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_m9_bay.mdl");
+	cfg::skins::iOrginalCtKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_default_ct.mdl");
+	cfg::skins::iOrginalTKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_default_t.mdl");
+	
+	if (dat->m_Value.m_Int == cfg::skins::iOrginalCtKnife) {
+		dat->m_Value.m_Int = cfg::skins::iCustomCtKnife;
+	}
+	if (dat->m_Value.m_Int == cfg::skins::iOrginalTKnife) {
+		dat->m_Value.m_Int = cfg::skins::iCustomTKnife;
+	}
+
+
+	vars::fnOriginalProxyFn(data, struc, Out);
+}
+
 void hk::Init() {
 
 	if (MH_Initialize())
@@ -47,6 +68,21 @@ void hk::Init() {
 	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(VelocityFont, "Tahoma", 32, 900, 0, 0, 0x010);
+
+	for (ClientClass* cl = I::baseclient->GetAllClasses(); cl; cl = cl->m_pNext) {
+		if (!strcmp(cl->m_pNetworkName, "CBaseViewModel")) {
+			RecvTable* cltable = cl->m_pRecvTable;
+			for (int nIndex = 0; nIndex < cltable->m_nProps; nIndex++) {
+				RecvProp* prop = &cltable->m_pProps[nIndex];
+
+				if (!prop || strcmp(prop->m_pVarName, "m_nModelIndex"))
+					continue;
+
+				vars::fnOriginalProxyFn = prop->m_ProxyFn;
+				prop->m_ProxyFn = (RecvVarProxyFn)ViewModelIndexProxy;
+			}
+		}
+	}
 }
 bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 {
@@ -185,6 +221,8 @@ void __stdcall hk::FrameStage(client_frame_stage_t stage) {
 		break;
 	case FRAME_NET_UPDATE_START:                break;
 	case FRAME_NET_UPDATE_POSTDATAUPDATE_START:
+		ApplySkins();
+
 		break;
 	case FRAME_NET_UPDATE_POSTDATAUPDATE_END:   break;
 	case FRAME_NET_UPDATE_END:
@@ -225,4 +263,32 @@ void hk::DrawString(int x, int y, int r, int g, int b, int a, bool bCenter, cons
 	I::surface->DrawSetTextPos(x, y);
 	I::surface->DrawSetTextColor(r, g, b, a);
 	I::surface->DrawPrintText(szString, wcslen(szString), 0);
+}
+void hk::ApplySkins() {
+	if (!vars::localPlayer || vars::localPlayer->getLifeState() != 0) return;
+	UINT* hWeapons = vars::localPlayer->getWeapons();
+
+	if (!hWeapons) return;
+
+	// TODO: ownership check
+
+	for (int i = 0; hWeapons[i]; i++) {
+
+		CBaseAttributableItem* Weapon = (CBaseAttributableItem*)I::entitylist->GetClientEntityFromHandle(hWeapons[i]);
+
+		if (!Weapon) break;
+
+		int WeaponIndex = *Weapon->GetItemDefinitionIndex();
+		if (WeaponIndex == WEAPON_KNIFE)
+		{
+
+			*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_KARAMBIT;
+		}
+		if (WeaponIndex == WEAPON_KNIFE_T)
+		{
+			*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_M9_BAYONET;
+		}
+
+		*Weapon->GetItemIDHigh() = -1;
+	}
 }

@@ -8,4 +8,9 @@ public:
 	{
 		return memory::Call<CEntity*>(this, 3, index);
 	}
+
+	constexpr CEntity* GetClientEntityFromHandle(DWORD Handle) noexcept
+	{
+		return memory::Call<CEntity*>(this, 4, Handle);
+	}
 };

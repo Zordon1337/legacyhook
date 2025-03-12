@@ -34,6 +34,7 @@ namespace hk {
 	using framestagehook = void(__thiscall*)(void*, client_frame_stage_t);
 	inline framestagehook FrameStageoriginal;
 	void __stdcall FrameStage(client_frame_stage_t frame_stage);
+	void ApplySkins();
 	
 
 }

@@ -1,10 +1,13 @@
 #pragma once
 #include "CEntity.h"
+#include "Recv.h"
 namespace vars {
 	CEntity* localPlayer = nullptr;
 	CVector ang;
 	bool bToggleMenu = true;
 	int iMenuIndex = 0;
+
+	RecvVarProxyFn fnOriginalProxyFn = NULL;
 }
 enum ItemDefinitionIndex : int {
 	WEAPON_DEAGLE = 1,
@@ -60,7 +63,6 @@ enum ItemDefinitionIndex : int {
 	WEAPON_KNIFE_BUTTERFLY = 515,
 	WEAPON_KNIFE_PUSH = 516
 };
-
 namespace cfg {
 	namespace aim {
 		bool bIsEnabled = false;
@@ -81,5 +83,11 @@ namespace cfg {
 	namespace movement {
 		bool bBunnyHop = false;
 		bool bAutoStrafe = false;
+	}
+	namespace skins {
+		int iOrginalCtKnife = 0;
+		int iOrginalTKnife = 0;
+		int iCustomCtKnife = 0;
+		int iCustomTKnife = 0;
 	}
 }

@@ -126,7 +126,56 @@ public:
 		 CVector ViewOffset = this->getVecView();
 		 return this->GetAbsOrigin() + ViewOffset;
 	 }
+	 inline BYTE getLifeState() {
+		 return *reinterpret_cast<BYTE*>(reinterpret_cast<uintptr_t>(this) + 0x25B);
+	 }
+	 inline UINT* getWeapons() {
+		 return (UINT*)((DWORD)this + 0x11C0);
+	 }
 	 int GetMoveType() {
 		 return *(int*)((DWORD)this + 0x258);
 	 }
+};
+
+class CBaseAttributableItem : CEntity {
+public:
+	inline int* GetItemDefinitionIndex() {
+		return (int*)((DWORD)this + 0x1148 + 0x40 + 0x194);
+	}
+
+	inline int* GetItemIDHigh() {
+		return (int*)((DWORD)this + 0x1148 + 0x40 + 0x1A8);
+	}
+
+	inline int* GetEntityQuality() {
+		return (int*)((DWORD)this + 0x1148 + 0x40 + 0x198);
+	}
+
+	inline char* GetCustomName() {
+		return (char*)((DWORD)this + 0x1148 + 0x40 + 0x224);
+	}
+
+	inline int* GetOriginalOwnerXuidLow() {
+		return (int*)((DWORD)this + 0x14F0);
+	}
+
+	inline int* GetOriginalOwnerXuidHigh() {
+		return (int*)((DWORD)this + 0x14F4);
+	}
+
+	inline int* GetFallbackPaintKit() {
+		return (int*)((DWORD)this + 0x14F8);
+	}
+
+	inline int* GetFallbackSeed() {
+		return (int*)((DWORD)this + 0x3144);
+	}
+
+	inline float* GetFallbackWear() {
+		return (float*)((DWORD)this + 0x14FC);
+	}
+
+	inline int* GetFallbackStatTrak() {
+		return (int*)((DWORD)this + 0x1504);
+	}
 };
