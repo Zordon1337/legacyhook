@@ -296,14 +296,19 @@ void hk::ApplySkins() {
 				break;
 			}
 			case WEAPON_AK47: {
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_AK47, "hy_ak47lam_blue").paintkit_id;
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_AK47, "cu_ak47_cobra").paintkit_id;
 				*Weapon->GetFallbackWear() = 0;
 				break;
 			}
 			case WEAPON_AWP: {
+
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_AWP, "cu_medieval_dragon_awp").paintkit_id;
+				*Weapon->GetFallbackWear() = 0;
 				break;
 			}
 			case WEAPON_SSG08: {
+				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_SSG08, "hy_ssg08_marker").paintkit_id;
+				*Weapon->GetFallbackWear() = 0;
 				break;
 			}
 		}
