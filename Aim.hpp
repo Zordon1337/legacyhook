@@ -55,7 +55,6 @@ namespace Features::Aim {
 			}
 			else {
 
-				// TODO: fix non silent aim
 				I::engine->SetViewAngles(cmd->viewangles + bestAngle);
 			}
 			cmd->buttons |= CUserCmd::IN_ATTACK;
