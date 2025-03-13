@@ -7,5 +7,3 @@ Exe version 1.38.8.1 (csgo)
 Exe build: 00:45:12 Nov 21 2014 (5858) (730)
 ```
 
-
-## Current Features: Check gif
