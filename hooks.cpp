@@ -23,8 +23,10 @@ HFont CheckboxFont;
 void ViewModelIndexProxy(const CRecvProxyData* data, void* struc, void* Out) {
 	auto dat = const_cast<CRecvProxyData*>(data);
 
-	cfg::skins::iCustomCtKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_karam.mdl");
-	cfg::skins::iCustomTKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_m9_bay.mdl");
+	// TODO: ANIM FIX FOR SOME KNIFES
+
+	cfg::skins::iCustomCtKnife = I::modelinfo->GetModelIndex(findKnifeModel(WEAPON_KNIFE_BAYONET));
+	cfg::skins::iCustomTKnife = I::modelinfo->GetModelIndex(findKnifeModel(WEAPON_KNIFE_FLIP));
 	cfg::skins::iOrginalCtKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_default_ct.mdl");
 	cfg::skins::iOrginalTKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_default_t.mdl");
 	
@@ -298,33 +300,23 @@ void hk::ApplySkins() {
 		switch (WeaponIndex)
 		{
 			case WEAPON_KNIFE_T: {
-				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_M9_BAYONET;
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_KNIFE_M9_BAYONET, "so_night").paintkit_id;
+				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_FLIP;
+				if (skins.find(WEAPON_KNIFE_FLIP) != skins.end()) {
+					*Weapon->GetFallbackPaintKit() = skins[WEAPON_KNIFE_FLIP].paintkit_id;
+				}
 				break;
 			}
 			case WEAPON_KNIFE: {
-				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_KARAMBIT;
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_KNIFE_KARAMBIT, "sp_tape_urban").paintkit_id;
+				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_BAYONET;
+				if (skins.find(WEAPON_KNIFE_BAYONET) != skins.end()) {
+					*Weapon->GetFallbackPaintKit() = skins[WEAPON_KNIFE_BAYONET].paintkit_id;
+				}
 				break;
 			}
-			case WEAPON_AK47: {
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_AK47, "cu_ak47_cobra").paintkit_id;
-				*Weapon->GetFallbackWear() = 0;
-				break;
-			}
-			case WEAPON_AWP: {
-
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_AWP, "cu_medieval_dragon_awp").paintkit_id;
-				*Weapon->GetFallbackWear() = 0;
-				break;
-			}
-			case WEAPON_SSG08: {
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_SSG08, "hy_ssg08_marker").paintkit_id;
-				*Weapon->GetFallbackWear() = 0;
-				break;
-			}
-			case WEAPON_M4A1_SILENCER: {
-				*Weapon->GetFallbackPaintKit() = get_paintkit_by_weapon_type_and_skin(paintkits, WEAPON_M4A1_SILENCER, "cu_m4a1s_cyrex").paintkit_id;
+			default: {
+				if (skins.find(WeaponIndex) != skins.end()) {
+					*Weapon->GetFallbackPaintKit() = skins[WeaponIndex].paintkit_id;
+				}
 			}
 		}
 		*Weapon->GetItemIDHigh() = -1;

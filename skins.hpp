@@ -11,6 +11,7 @@ public:
     PaintKit(int w_type, std::string s_name, int pkit_id)
         : weapon_type(static_cast<ItemDefinitionIndex>(w_type)), skin_name(s_name), paintkit_id(pkit_id) {
     }
+    PaintKit() : weapon_type(ItemDefinitionIndex(0)), skin_name(""), paintkit_id(0) {}
 };
 
 std::vector<PaintKit> paintkits = {
@@ -508,7 +509,5 @@ PaintKit get_paintkit_by_weapon_type_and_skin(const std::vector<PaintKit>& paint
     }
     return PaintKit(0,"",0);
 }
-
-
 
 std::unordered_map<int, PaintKit> skins;

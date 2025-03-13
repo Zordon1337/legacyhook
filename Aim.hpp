@@ -43,7 +43,7 @@ namespace Features::Aim {
 
 			if (fov < bestFov) {
 				bestFov = fov;
-				bestAngle = enemyAngle;
+				bestAngle = enemyAngle;	
 				bestTarget = player;
 			}
 		}

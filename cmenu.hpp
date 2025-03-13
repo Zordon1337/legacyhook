@@ -1,4 +1,5 @@
 #pragma once
+#include "skins.hpp"
 #include "interfaces.h"
 
 #define MENU_WIDTH 600
@@ -103,13 +104,14 @@ namespace CMenuElement {
 
         for (int i = 0; i < 4 ; ++i) {
             I::surface->DrawSetColor(40, 40, 40, 255);
-
+            if (vars::iMenuIndex == i) I::surface->DrawSetColor(245, 92, 0, 255);
 			if (x1 > buttonX && x1 < buttonX + buttonWidth && x2 > buttonY && x2 < buttonY + buttonHeight) {
 				I::surface->DrawSetColor(255, 87, 34, 255);
 				if (GetAsyncKeyState(VK_LBUTTON) & 1) {
 					vars::iMenuIndex = i;
 					I::surface->DrawSetColor(255, 102, 0, 255);
 				}
+                
 			}
             // i could make it better but fuck it
 
@@ -129,6 +131,130 @@ namespace CMenuElement {
             buttonX += buttonWidth;
         }
 		return CVector(buttonX, buttonY);
+    }
+    void SkinTypeButton(int x, int y, int font, ItemDefinitionIndex Weapon) {
+        bool toggled = cfg::skins::iSkinsTabSelectedSkin == Weapon;
+        auto buttonWidth = (MENU_HEIGHT / 2) - 40;
+        auto buttonHeight = 20;
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
+        I::surface->DrawSetColor(40, 40, 40, 255);
+        if (toggled) I::surface->DrawSetColor(245, 92, 0, 255);
+        if (x1 > x && x1 < x + buttonWidth && x2 > y && x2 < y + buttonHeight) {
+            I::surface->DrawSetColor(255, 87, 34, 255);
+            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                cfg::skins::iSkinsTabSelectedSkin = Weapon;
+                I::surface->DrawSetColor(255, 102, 0, 255);
+            }
+        }
+        
+        I::surface->DrawFilledRect(x + 1, y + 1, x + buttonWidth - 1, y + buttonHeight + 1);
+        I::surface->DrawSetColor(255, 255, 255, 255);
+        I::surface->DrawLine(x, y + buttonHeight + 1, x + buttonWidth, y + buttonHeight + 1);
+
+        const char* test = nullptr;
+
+        auto it = ItemDefNames.find(Weapon); 
+        if (it != ItemDefNames.end()) {
+            test = it->second;
+        }
+        else {
+            test = "Unknown Weapon";  
+        }
+       
+        auto size = I::surface->getTextSize(test, font);
+        auto textX = x + 5;
+        auto textY = y + 2;
+
+        hk::DrawString(textX, textY, 255, 255, 255, 255, false, test, font);
+
+    }
+    void SkinButton(int x, int y, int font, ItemDefinitionIndex Weapon, PaintKit skin) {
+        bool toggled = false;
+
+
+        if (skins.find(Weapon) != skins.end()) {
+            if (skins[Weapon].paintkit_id == skin.paintkit_id) toggled = true;
+        }
+        auto buttonWidth = (MENU_HEIGHT / 2) - 20 + 10;
+        auto buttonHeight = 20;
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
+        I::surface->DrawSetColor(40, 40, 40, 255);
+        if (toggled) I::surface->DrawSetColor(245, 92, 0, 255);
+        if (x1 > x && x1 < x + buttonWidth && x2 > y && x2 < y + buttonHeight) {
+            I::surface->DrawSetColor(255, 87, 34, 255);
+            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                skins[Weapon] = skin;
+                I::surface->DrawSetColor(255, 102, 0, 255);
+            }
+        }
+
+        I::surface->DrawFilledRect(x + 1, y + 1, x + buttonWidth - 1, y + buttonHeight + 1);
+        I::surface->DrawSetColor(255, 255, 255, 255);
+        I::surface->DrawLine(x, y + buttonHeight + 1, x + buttonWidth, y + buttonHeight + 1);
+
+        const char* test = nullptr;
+
+
+        auto textX = x + 5;
+        auto textY = y + 2;
+
+        hk::DrawString(textX, textY, 255, 255, 255, 255, false, skin.skin_name.c_str(), font);
+
+    }
+    void SkinsButtonBack(int x, int y, int font) {
+        auto buttonWidth = ((MENU_HEIGHT / 2) - 40) / 2;
+        auto buttonHeight = 40;
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
+        I::surface->DrawSetColor(40, 40, 40, 255);
+        if (x1 > x && x1 < x + buttonWidth && x2 > y && x2 < y + buttonHeight) {
+            I::surface->DrawSetColor(255, 87, 34, 255);
+            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                cfg::skins::iWeaponTypesTab = 0; // the dumbest solution but only one that came to my mind while finding something that wont require handler for shit like equaling to -1 or 2
+                I::surface->DrawSetColor(255, 102, 0, 255);
+            }
+        }
+
+        I::surface->DrawFilledRect(x + 1, y + 1, x + buttonWidth - 1, y + buttonHeight + 1);
+        I::surface->DrawSetColor(255, 255, 255, 255);
+        I::surface->DrawLine(x, y, x, y + buttonHeight);
+        I::surface->DrawLine(x, y + buttonHeight, x + buttonWidth, y + buttonHeight);
+
+        const char* test = nullptr;
+
+
+        auto textX = x + 3;
+        auto textY = y + 2;
+
+        hk::DrawString(textX, textY, 255, 255, 255, 255, false, "Previous", font);
+    }
+    void SkinsButtonForward(int x, int y, int font) {
+        auto buttonWidth = (((MENU_HEIGHT / 2) - 40) / 2) - 1;
+        auto buttonHeight = 40;
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
+        I::surface->DrawSetColor(40, 40, 40, 255);
+        if (x1 > x && x1 < x + buttonWidth && x2 > y && x2 < y + buttonHeight) {
+            I::surface->DrawSetColor(255, 87, 34, 255);
+            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                cfg::skins::iWeaponTypesTab = 1; // the dumbest solution but only one that came to my mind while finding something that wont require handler for shit like equaling to -1 or 2
+                I::surface->DrawSetColor(255, 102, 0, 255);
+            }
+        }
+
+        I::surface->DrawFilledRect(x, y + 1, x + buttonWidth, y + buttonHeight);
+        I::surface->DrawSetColor(255, 255, 255, 255);
+        I::surface->DrawLine(x, y + buttonHeight, x + buttonWidth, y + buttonHeight);
+        I::surface->DrawLine(x + buttonWidth, y, x + buttonWidth, y + buttonHeight);
+        const char* test = nullptr;
+
+
+        auto textX = x + 5;
+        auto textY = y + 2;
+
+        hk::DrawString(textX, textY, 255, 255, 255, 255, false, "Next", font);
     }
 }
 namespace CMenu {
@@ -185,6 +311,39 @@ namespace CMenu {
                 break;
             }
             case 2: {
+
+                auto oldpos = NextPos.x + MENU_WIDTH / 2 - 20;
+                I::surface->DrawOutlinedRect(NextPos.x, NextPos.y, NextPos.x + MENU_WIDTH / 2 - 40, (h / 2 + MENU_HEIGHT / 2) - 45);
+                I::surface->DrawOutlinedRect(NextPos.x + MENU_WIDTH / 2 - 20, NextPos.y, NextPos.x + MENU_WIDTH - 20, (h / 2 + MENU_HEIGHT / 2) - 10);
+
+                if (cfg::skins::iWeaponTypesTab == 0) {
+                    for (int i2 = 0; i2 < 23; i2++) {
+
+                        CMenuElement::SkinTypeButton(NextPos.x, NextPos.y, CheckboxFont, skinnableitems[i2]);
+                        NextPos.y += 21;
+                    }
+                }
+                else {
+                    for (int i2 = 23; i2 < skinnableitems_amount; i2++) {
+
+                        CMenuElement::SkinTypeButton(NextPos.x, NextPos.y, CheckboxFont, skinnableitems[i2]);
+                        NextPos.y += 21;
+                    }
+                }
+                NextPos.y = (h / 2 + MENU_HEIGHT / 2) - 45;
+                CMenuElement::SkinsButtonBack(NextPos.x, NextPos.y, CheckboxFont);
+                NextPos.x += ((MENU_HEIGHT / 2) - 40) / 2;
+                CMenuElement::SkinsButtonForward(NextPos.x, NextPos.y, CheckboxFont);
+                // draw skins for weapon
+                NextPos.x = oldpos;
+                NextPos.y = r1.y + 40;;
+                for (int i = 0; i < paintkits.size(); i++)
+                {
+                    if (paintkits.at(i).weapon_type == cfg::skins::iSkinsTabSelectedSkin) {
+                        CMenuElement::SkinButton(NextPos.x, NextPos.y, CheckboxFont, (ItemDefinitionIndex)cfg::skins::iSkinsTabSelectedSkin, paintkits.at(i));
+                        NextPos.y += 21;
+                    }
+                }
                 break;
             }
             case 3: {
