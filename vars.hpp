@@ -111,7 +111,7 @@ const std::unordered_map<ItemDefinitionIndex, const char*> ItemDefNames = {
 	{WEAPON_KNIFE_BUTTERFLY, "WEAPON_KNIFE_BUTTERFLY"},
 	{WEAPON_KNIFE_PUSH, "WEAPON_KNIFE_PUSH"}
 };
-#define skinnableitems_amount 44
+#define skinnableitems_amount 38
 const ItemDefinitionIndex skinnableitems[] = {
 	WEAPON_DEAGLE,
 	WEAPON_ELITE,
