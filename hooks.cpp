@@ -68,9 +68,9 @@ void hk::Init() {
 	CheckboxFont = I::surface->CreateFont();
 	I::surface->SetFontGlyphSet(WatermarkFont, "Tahoma", 22, 400, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x010);
-	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0x010);
+	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 16, 900, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(VelocityFont, "Tahoma", 32, 900, 0, 0, 0x010);
-	I::surface->SetFontGlyphSet(CheckboxFont, "Tahoma", 12, 100, 0, 0, 0x010);
+	I::surface->SetFontGlyphSet(CheckboxFont, "Arial", 16, 100, 0, 0, 0x010);
 	for (ClientClass* cl = I::baseclient->GetAllClasses(); cl; cl = cl->m_pNext) {
 		if (!strcmp(cl->m_pNetworkName, "CBaseViewModel")) {
 			RecvTable* cltable = cl->m_pRecvTable;
