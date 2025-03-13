@@ -199,8 +199,16 @@ namespace CMenuElement {
 
         auto textX = x + 5;
         auto textY = y + 2;
+        auto res = PaintKitToSkinName(skin);
+        if (res == "U")
+        {
 
-        hk::DrawString(textX, textY, 255, 255, 255, 255, false, skin.skin_name.c_str(), font);
+            hk::DrawString(textX, textY, 255, 255, 255, 255, false, skin.skin_name.c_str(), font);
+        }
+        else {
+
+            hk::DrawString(textX, textY, 255, 255, 255, 255, false, res, font);
+        }
 
     }
     void SkinsButtonBack(int x, int y, int font) {
