@@ -27,7 +27,7 @@ namespace CMenuElement {
 		int x1, x2;
 		I::surface->GetCursorPos(x1, x2);
 		if (x1 > x && x1 < xx && x2 > y && x2 < yy) {
-			if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+			if (GetAsyncKeyState(VK_LBUTTON)) {
 				value = (x1 - x) / (float)(xx - x) * (max - min) + min;
 			}
 		}
@@ -44,7 +44,7 @@ namespace CMenuElement {
         int x1, x2;
         I::surface->GetCursorPos(x1, x2);
         if (x1 > x && x1 < xx && x2 > y && x2 < yy) {
-            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+            if (GetAsyncKeyState(VK_LBUTTON)) {
                 value = (x1 - x) / (float)(xx - x) * (max - min) + min;
             }
         }
@@ -68,7 +68,7 @@ namespace CMenuElement {
                 toggle = !toggle;
 			}
             if (toggle) {
-                I::surface->DrawSetColor(50, 150, 255, 255);
+                I::surface->DrawSetColor(162,32,240, 255);
             }
             else {
                 I::surface->DrawSetColor(200, 200, 255, 255);
@@ -76,15 +76,15 @@ namespace CMenuElement {
 		}
 		else {
             if (toggle) {
-                I::surface->DrawSetColor(30, 120, 220, 255);
+                I::surface->DrawSetColor(152, 30, 230, 255);
             }
             else {
                 I::surface->DrawSetColor(180, 180, 180, 255);
             }
 		}
         I::surface->DrawFilledRect(x, y, x + 15, y + 15);
-        auto siz = I::surface->get_text_size(font, text);
-        hk::DrawString(x + 20, y + 2, 255, 255, 255, 255, false, text.c_str(), font);
+        auto siz = I::surface->getTextSize(text.c_str(), font);
+        hk::DrawString(x + 20, y + 1, 255, 255, 255, 255, false, text.c_str(), font);
     }
     CVector DrawTabs(int x, int y, int menufont) {
         int buttonWidth = 133;
@@ -149,7 +149,7 @@ namespace CMenu {
             case 0: {
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bIsEnabled, "Aimbot");
                 NextPos.y += 30;
-                CMenuElement::SliderFloat(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::aim::flAimbotFov, 0.1, 180, "Aimbot Fov");
+                CMenuElement::SliderFloat(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, menufont, cfg::aim::flAimbotFov, 0.1, 180, "Aimbot Fov");
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bUseAutofire, "Autofire");
                 NextPos.y += 20;
@@ -157,7 +157,7 @@ namespace CMenu {
                 NextPos.y += 20;
                 CMenuElement::Checkbox(NextPos.x + 5, NextPos.y + 5, CheckboxFont, cfg::aim::bAntiAim, "Anti Aim");
                 NextPos.y += 30;
-                CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::aim::iAntiAimSpeed, 1, 15, "AA Speed");
+                CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, menufont, cfg::aim::iAntiAimSpeed, 1, 15, "AA Speed");
                 break;
             }
             case 1: {
@@ -171,7 +171,7 @@ namespace CMenu {
                 NextPos.y += 20;
                 if (cfg::esp::bDrawVelocity) {
                     NextPos.y += 10;
-                    CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 20, menufont, cfg::esp::iVelocityYPos, 1, 300, "Velocity Y Pos");
+                    CMenuElement::Slider(NextPos.x + 5, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, menufont, cfg::esp::iVelocityYPos, 1, 300, "Velocity Y Pos");
                 }
                 break;
             }

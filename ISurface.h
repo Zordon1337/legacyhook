@@ -7,7 +7,6 @@
 #include "memory.h"
 
 class CEngineVGui;
-
 enum PaintMode_t
 {
 	PAINT_UIPANELS = (1 << 0),
@@ -133,16 +132,29 @@ public:
 	{
 		memory::Call<void>(this, 99, std::ref(x), std::ref(y));
 	}
-	void GetTextSize(unsigned long hFont, const wchar_t* wText, int& iWide, int& iTall)
+	void GetTextSize(unsigned long hFont, const wchar_t* wText, int* iWide, int* iTall)
 	{
-		memory::Call<void>(this, 78, hFont, wText, std::ref(iWide), std::ref(iTall));
+		memory::Call<void>(this, 78, hFont, wText, iWide, iTall);
 	}
-	CVector get_text_size(unsigned long font, std::string text) {
-		std::wstring a(text.begin(), text.end());
-		const wchar_t* wstr = a.c_str();
-		static int w, h;
+	std::wstring multiByteToWideString(const char* mbString)
+	{
+		//http://stackoverflow.com/questions/8032080/how-to-convert-char-to-wchar-t
+		std::size_t length = std::strlen(mbString);
+		std::wstring wideString(length, L'#');
+		size_t len = 0;
+		mbstowcs(&wideString[0], mbString, length);
+		return wideString;
+	}
 
-		this->GetTextSize(font, wstr, w, h);
-		return CVector(w,h);
+	CVector getTextSizeFromWChar(const wchar_t* string, HFont font)
+	{
+		int width = 0, height = 0;
+		this->GetTextSize(font, string, &width, &height);
+		return CVector(width, height);
 	}
+	CVector getTextSize(const char* string, HFont font)
+	{
+		return getTextSizeFromWChar(multiByteToWideString(string).c_str(), font);
+	}
+
 };

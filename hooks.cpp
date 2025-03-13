@@ -70,7 +70,7 @@ void hk::Init() {
 	I::surface->SetFontGlyphSet(MediumFont, "Arial", 16, 400, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 12, 150, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(VelocityFont, "Tahoma", 32, 900, 0, 0, 0x010);
-	I::surface->SetFontGlyphSet(CheckboxFont, "Tahoma", 12, 900, 0, 0, 0x010);
+	I::surface->SetFontGlyphSet(CheckboxFont, "Tahoma", 12, 100, 0, 0, 0x010);
 	for (ClientClass* cl = I::baseclient->GetAllClasses(); cl; cl = cl->m_pNext) {
 		if (!strcmp(cl->m_pNetworkName, "CBaseViewModel")) {
 			RecvTable* cltable = cl->m_pRecvTable;
@@ -196,7 +196,7 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 			auto vel = vars::localPlayer->getVelocity();
 			auto text = std::to_string((int)(sqrt(POW(vel.x) + POW(vel.y))));
 
-			auto textsize = I::surface->get_text_size(VelocityFont, text);
+			auto textsize = I::surface->getTextSize(text.c_str(), VelocityFont);
 			DrawString((w / 2) - (textsize.x / 2), h - cfg::esp::iVelocityYPos - (textsize.y / 2), 255, 255, 255, 255, false, text.c_str(), VelocityFont);
 		}
 		if (cfg::misc::bSniperCrosshair) {
