@@ -201,12 +201,12 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 			auto textsize = I::surface->getTextSize(text.c_str(), VelocityFont);
 			DrawString((w / 2) - (textsize.x / 2), h - cfg::esp::iVelocityYPos - (textsize.y / 2), 255, 255, 255, 255, false, text.c_str(), VelocityFont);
 		}
-		if (cfg::misc::bSniperCrosshair) {
+		if (cfg::misc::bCustomCrosshair) {
 			int w, h;
 			I::engine->GetScreenSize(w, h);
 			I::surface->DrawSetColor(255, 255, 255, 255);
-			I::surface->DrawLine((w / 2) - 10, h / 2, (w / 2) + 10, h / 2);
-			I::surface->DrawLine(w / 2, (h / 2) - 10, w / 2, (h / 2) + 10);
+			I::surface->DrawLine((w / 2) - (10 * cfg::misc::iCustomCrosshairSize), h / 2, (w / 2) + (10 * cfg::misc::iCustomCrosshairSize), h / 2);
+			I::surface->DrawLine(w / 2, (h / 2) - (10 * cfg::misc::iCustomCrosshairSize), w / 2, (h / 2) + (10 * cfg::misc::iCustomCrosshairSize));
 		}
 	}
 	PaintTraverseOriginal(I::panel, panel, forceRepaint, allowForce);

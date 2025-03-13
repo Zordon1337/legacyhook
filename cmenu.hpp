@@ -292,7 +292,7 @@ namespace CMenu {
                 NextPos.y += 30;
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bAntiAim, "Anti Aim");
                 NextPos.y += 40;
-                CMenuElement::Slider(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::iAntiAimSpeed, 1, 15, "AA Speed");
+                CMenuElement::Slider(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::iAntiAimSpeed, 1, 45, "AA Speed");
                 break;
             }
             case 1: {
@@ -351,7 +351,12 @@ namespace CMenu {
                 NextPos.y += 30;
 				CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::movement::bAutoStrafe, "Auto Strafe"); // temporarily hidden because broken
                 NextPos.y += 30;
-                CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::misc::bSniperCrosshair, "Sniper Crosshair");
+                CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::misc::bCustomCrosshair, "Custom Crosshair");
+                if (cfg::misc::bCustomCrosshair) {
+
+                    NextPos.y += 35;
+                    CMenuElement::Slider(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::misc::iCustomCrosshairSize, 1, 10, "Size");
+                }
                 break;
             }
         }

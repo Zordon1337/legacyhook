@@ -192,7 +192,8 @@ namespace cfg {
 		bool bAutoStrafe = false;
 	}
 	namespace misc {
-		bool bSniperCrosshair = false;
+		bool bCustomCrosshair = false;
+		int iCustomCrosshairSize = 1;
 	}
 	namespace skins {
 		int iOrginalCtKnife = 0;
