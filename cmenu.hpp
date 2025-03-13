@@ -211,6 +211,52 @@ namespace CMenuElement {
         }
 
     }
+    void KnifeButton(int x, int y, int font, ItemDefinitionIndex KnifeType, bool isCT) {
+        bool toggled = false;
+
+
+        if (isCT) {
+            if (KnifeType == CTKnife) toggled = true;
+        } else { if (KnifeType == TKnife) toggled = true; }
+        auto buttonWidth = 150; // i cannot imagine how my brain was asleep and why it works but it works
+        auto buttonHeight = 20;
+        int x1, x2;
+        I::surface->GetCursorPos(x1, x2);
+        I::surface->DrawSetColor(40, 40, 40, 255);
+        if (toggled) I::surface->DrawSetColor(245, 92, 0, 255);
+        if (x1 > x && x1 < x + buttonWidth && x2 > y && x2 < y + buttonHeight) {
+            I::surface->DrawSetColor(255, 87, 34, 255);
+            if (GetAsyncKeyState(VK_LBUTTON) & 1) {
+                if (isCT) {
+                    CTKnife = KnifeType;
+                }
+                else {
+                    TKnife = KnifeType;
+                }
+                I::surface->DrawSetColor(255, 102, 0, 255);
+            }
+        }
+
+        I::surface->DrawFilledRect(x + 1, y + 1, x + buttonWidth - 1, y + buttonHeight + 1);
+        I::surface->DrawSetColor(255, 255, 255, 255);
+
+        const char* test = nullptr;
+
+
+        auto textX = x + 5;
+        auto textY = y + 2;
+        auto it = ItemDefNames.find(KnifeType);
+        if (it != ItemDefNames.end()) {
+            test = it->second;
+        }
+        else {
+            test = "Unknown Knife";
+        }
+
+        hk::DrawString(textX, textY, 255, 255, 255, 255, false, test, font);
+        
+
+    }
     void SkinsButtonBack(int x, int y, int font) {
         auto buttonWidth = ((MENU_HEIGHT / 2) - 40) / 2;
         auto buttonHeight = 40;
@@ -365,6 +411,39 @@ namespace CMenu {
                     NextPos.y += 35;
                     CMenuElement::Slider(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::misc::iCustomCrosshairSize, 1, 10, "Size");
                 }
+
+                NextPos.y += 30;
+                I::surface->DrawSetColor(255, 255, 255, 255); 
+                hk::DrawString(NextPos.x, NextPos.y, 255, 255, 255, 255, false, "T Knife", CheckboxFont);
+                NextPos.y += 20;
+                I::surface->DrawOutlinedRect(NextPos.x, NextPos.y, NextPos.x + 150, NextPos.y + 128);
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_BAYONET, false);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_BUTTERFLY, false);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_FLIP, false);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_GUT, false);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_KARAMBIT, false);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_M9_BAYONET, false);
+                NextPos.y += 21;
+                hk::DrawString(NextPos.x, NextPos.y, 255, 255, 255, 255, false, "CT Knife", CheckboxFont);
+                NextPos.y += 20;
+                I::surface->DrawOutlinedRect(NextPos.x, NextPos.y, NextPos.x + 150, NextPos.y + 128);
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_BAYONET, true);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_BUTTERFLY, true);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_FLIP, true);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_GUT, true);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_KARAMBIT, true);
+                NextPos.y += 21;
+                CMenuElement::KnifeButton(NextPos.x, NextPos.y, CheckboxFont, WEAPON_KNIFE_M9_BAYONET, true);
+                NextPos.y += 21;
                 break;
             }
         }

@@ -161,7 +161,6 @@ const std::unordered_map<ItemDefinitionIndex, const char*> knifeModels = {
 	{WEAPON_KNIFE_TACTICAL, "models/weapons/v_knife_tactical.mdl"},
 	{WEAPON_KNIFE_BUTTERFLY, "models/weapons/v_knife_butterfly.mdl"}
 };
-
 const char* findKnifeModel(ItemDefinitionIndex idx) {
 	if (knifeModels.find(idx) != knifeModels.end()) {
 		return knifeModels.find(idx)->second;

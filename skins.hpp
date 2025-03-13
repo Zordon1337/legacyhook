@@ -820,3 +820,5 @@ const char* PaintKitToSkinName(PaintKit kit) {
 }
 
 std::unordered_map<int, PaintKit> skins;
+ItemDefinitionIndex CTKnife = WEAPON_KNIFE_KARAMBIT;
+ItemDefinitionIndex TKnife = WEAPON_KNIFE_GUT;

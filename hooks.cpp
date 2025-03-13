@@ -25,8 +25,8 @@ void ViewModelIndexProxy(const CRecvProxyData* data, void* struc, void* Out) {
 
 	// TODO: ANIM FIX FOR SOME KNIFES
 
-	cfg::skins::iCustomCtKnife = I::modelinfo->GetModelIndex(findKnifeModel(WEAPON_KNIFE_BAYONET));
-	cfg::skins::iCustomTKnife = I::modelinfo->GetModelIndex(findKnifeModel(WEAPON_KNIFE_FLIP));
+	cfg::skins::iCustomCtKnife = I::modelinfo->GetModelIndex(findKnifeModel(CTKnife));
+	cfg::skins::iCustomTKnife = I::modelinfo->GetModelIndex(findKnifeModel(TKnife));
 	cfg::skins::iOrginalCtKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_default_ct.mdl");
 	cfg::skins::iOrginalTKnife = I::modelinfo->GetModelIndex("models/weapons/v_knife_default_t.mdl");
 	
@@ -300,16 +300,16 @@ void hk::ApplySkins() {
 		switch (WeaponIndex)
 		{
 			case WEAPON_KNIFE_T: {
-				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_FLIP;
-				if (skins.find(WEAPON_KNIFE_FLIP) != skins.end()) {
-					*Weapon->GetFallbackPaintKit() = skins[WEAPON_KNIFE_FLIP].paintkit_id;
+				*Weapon->GetItemDefinitionIndex() = TKnife;
+				if (skins.find(TKnife) != skins.end()) {
+					*Weapon->GetFallbackPaintKit() = skins[TKnife].paintkit_id;
 				}
 				break;
 			}
 			case WEAPON_KNIFE: {
-				*Weapon->GetItemDefinitionIndex() = WEAPON_KNIFE_BAYONET;
-				if (skins.find(WEAPON_KNIFE_BAYONET) != skins.end()) {
-					*Weapon->GetFallbackPaintKit() = skins[WEAPON_KNIFE_BAYONET].paintkit_id;
+				*Weapon->GetItemDefinitionIndex() = CTKnife;
+				if (skins.find(CTKnife) != skins.end()) {
+					*Weapon->GetFallbackPaintKit() = skins[CTKnife].paintkit_id;
 				}
 				break;
 			}
