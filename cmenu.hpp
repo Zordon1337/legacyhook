@@ -176,7 +176,7 @@ namespace CMenuElement {
         if (skins.find(Weapon) != skins.end()) {
             if (skins[Weapon].paintkit_id == skin.paintkit_id) toggled = true;
         }
-        auto buttonWidth = (MENU_HEIGHT / 2) - 20 + 10;
+        auto buttonWidth = (MENU_HEIGHT / 2); // i cannot imagine how my brain was asleep and why it works but it works
         auto buttonHeight = 20;
         int x1, x2;
         I::surface->GetCursorPos(x1, x2);
