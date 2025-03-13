@@ -185,7 +185,7 @@ namespace CMenu {
                 break;
             }
             case 2: {
-
+                break;
             }
             case 3: {
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::movement::bBunnyHop, "Bhop");

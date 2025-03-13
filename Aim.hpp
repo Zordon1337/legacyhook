@@ -49,8 +49,14 @@ namespace Features::Aim {
 		}
 		if (bestTarget && cfg::aim::bIsEnabled) {
 			auto oldangle = cmd->viewangles;
-			cmd->viewangles = cmd->viewangles + bestAngle;
-			I::engine->SetViewAngles(cmd->viewangles);
+			if (cfg::aim::bSilentAim) {
+
+				cmd->viewangles = cmd->viewangles + bestAngle;
+			}
+			else {
+
+				I::engine->SetViewAngles(cmd->viewangles);
+			}
 			cmd->buttons |= CUserCmd::IN_ATTACK;
 			
 			
