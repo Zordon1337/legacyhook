@@ -57,8 +57,6 @@ namespace Features::Aim {
 
 				I::engine->SetViewAngles(cmd->viewangles + bestAngle);
 			}
-			cmd->buttons |= CUserCmd::IN_ATTACK;
-			
 			
 		}
 

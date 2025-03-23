@@ -132,6 +132,12 @@ public:
 	 inline UINT* getWeapons() {
 		 return (UINT*)((DWORD)this + 0x11C0);
 	 }
+	 inline UINT* getWeapon() {
+		 return (UINT*)((DWORD)this + 0x0D78);
+	 }
+	 inline float getWeaponNextPrimaryAttack() {
+		 return *reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(getWeapon() + 0x159C));
+	 }
 	 int GetMoveType() {
 		 return *(int*)((DWORD)this + 0x258);
 	 }

@@ -189,6 +189,7 @@
     <ClInclude Include="skins.hpp" />
     <ClInclude Include="Structs.h" />
     <ClInclude Include="vars.hpp" />
+    <ClInclude Include="Visuals.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

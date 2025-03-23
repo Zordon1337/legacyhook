@@ -13,6 +13,7 @@
 #include "Movement.hpp"
 #include "IBaseClientDLL.h"
 #include "skins.hpp"
+#include "Visuals.hpp"
 #define POW(x) ((x)*(x))
 
 HFont WatermarkFont;
@@ -173,20 +174,8 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				const auto left = static_cast<int>(top.x - w);
 				const auto right = static_cast<int>(top.x + w);
 				
-				if (cfg::esp::bBoxEsp)
-				{
-					I::surface->DrawSetColor(255, 255, 255, 255);
-					I::surface->DrawOutlinedRect(left, top.y, right, bottom.y);
-
-				}
-
-				if (cfg::esp::bHealthBar) {
-					I::surface->DrawSetColor(0, 0, 0, 255);
-					I::surface->DrawOutlinedRect(left - 4, top.y, left - 1, bottom.y);
-					const float health = player->getHealth() * 0.01f;
-					I::surface->DrawSetColor(255 * (1.f - health), 255 * health, 0, 255);
-					I::surface->DrawFilledRect(left - 3, (bottom.y - h * health ), left - 2, bottom.y);
-				}
+				Features::Visuals::DrawBox(left, top.y, right, bottom.y, 255, 255, 255, 255);
+				Features::Visuals::DrawHealthBar(player, left, bottom, top, h);
 				
 			}
 		}
@@ -233,28 +222,8 @@ void __stdcall hk::FrameStage(client_frame_stage_t stage) {
 		}
 	}
 	switch (stage) {
-	case FRAME_UNDEFINED:                       break;
-	case FRAME_START:
-
-		break;
-	case FRAME_NET_UPDATE_START:                break;
-	case FRAME_NET_UPDATE_POSTDATAUPDATE_START:
-		ApplySkins();
-
-		break;
-	case FRAME_NET_UPDATE_POSTDATAUPDATE_END:   break;
-	case FRAME_NET_UPDATE_END:
-
-		break;
-	case FRAME_RENDER_START:
-		if (I::engine->IsInGame() && vars::localPlayer && cfg::esp::bThirdPerson)
-		{
-			I::prediction->SetLocalViewAngles(vars::ang);
-		}
-		break;
-		
-	case FRAME_RENDER_END:                      break;
-	default:                                    break;
+	case FRAME_NET_UPDATE_POSTDATAUPDATE_START: Features::Visuals::ApplySkins(); break;
+	case FRAME_RENDER_START: Features::Visuals::FixAngles(); break;
 	}
 	hk::FrameStageoriginal(I::baseclient, stage);
 }
@@ -282,44 +251,3 @@ void hk::DrawString(int x, int y, int r, int g, int b, int a, bool bCenter, cons
 	I::surface->DrawSetTextColor(r, g, b, a);
 	I::surface->DrawPrintText(szString, wcslen(szString), 0);
 }
-void hk::ApplySkins() {
-	if (!vars::localPlayer || vars::localPlayer->getLifeState() != 0) return;
-	UINT* hWeapons = vars::localPlayer->getWeapons();
-
-	if (!hWeapons) return;
-
-	// TODO: ownership check
-
-	for (int i = 0; hWeapons[i]; i++) {
-
-		CBaseAttributableItem* Weapon = (CBaseAttributableItem*)I::entitylist->GetClientEntityFromHandle(hWeapons[i]);
-
-		if (!Weapon) break;
-
-		int WeaponIndex = *Weapon->GetItemDefinitionIndex();
-		switch (WeaponIndex)
-		{
-			case WEAPON_KNIFE_T: {
-				*Weapon->GetItemDefinitionIndex() = TKnife;
-				if (skins.find(TKnife) != skins.end()) {
-					*Weapon->GetFallbackPaintKit() = skins[TKnife].paintkit_id;
-				}
-				break;
-			}
-			case WEAPON_KNIFE: {
-				*Weapon->GetItemDefinitionIndex() = CTKnife;
-				if (skins.find(CTKnife) != skins.end()) {
-					*Weapon->GetFallbackPaintKit() = skins[CTKnife].paintkit_id;
-				}
-				break;
-			}
-			default: {
-				if (skins.find(WeaponIndex) != skins.end()) {
-					*Weapon->GetFallbackPaintKit() = skins[WeaponIndex].paintkit_id;
-				}
-			}
-		}
-		*Weapon->GetItemIDHigh() = -1;
-	}
-}
-

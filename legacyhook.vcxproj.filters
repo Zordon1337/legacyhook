@@ -152,5 +152,8 @@
     <ClInclude Include="EntityList.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
+    <ClInclude Include="Visuals.hpp">
+      <Filter>Source Files\Features</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

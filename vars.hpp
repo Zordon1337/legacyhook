@@ -111,7 +111,7 @@ const std::unordered_map<ItemDefinitionIndex, const char*> ItemDefNames = {
 	{WEAPON_KNIFE_BUTTERFLY, "Butterfly Knife"},
 	{WEAPON_KNIFE_PUSH, "Shadow Daggers"}
 };
-#define skinnableitems_amount 38
+#define skinnableitems_amount 39
 const ItemDefinitionIndex skinnableitems[] = {
 	WEAPON_DEAGLE,
 	WEAPON_ELITE,
@@ -151,6 +151,7 @@ const ItemDefinitionIndex skinnableitems[] = {
 	WEAPON_KNIFE_KARAMBIT,
 	WEAPON_KNIFE_TACTICAL,
 	WEAPON_KNIFE_BUTTERFLY,
+	WEAPON_KNIFE_M9_BAYONET,
 };
 const std::unordered_map<ItemDefinitionIndex, const char*> knifeModels = {
 	{WEAPON_KNIFE_BAYONET, "models/weapons/v_knife_bayonet.mdl"},
