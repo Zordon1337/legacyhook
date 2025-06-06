@@ -339,11 +339,13 @@ namespace CMenu {
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bIsEnabled, "Aimbot");
                 NextPos.y += 40;
                 CMenuElement::SliderFloat(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::flAimbotFov, 0.1, 180, "Aimbot Fov");
-                NextPos.y += 25;
+                NextPos.y += 40;
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bUseAutofire, "Autofire");
-                NextPos.y += 30;
+                NextPos.y += 40;
+                CMenuElement::SliderFloat(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::flMaxInaccurracy, 0, 1, "Max Inaccurracy");
+                NextPos.y += 40;
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bSilentAim, "Silent Aim");
-                NextPos.y += 30;
+                NextPos.y += 40;
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bAntiAim, "Anti Aim");
                 NextPos.y += 40;
                 CMenuElement::Slider(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::iAntiAimSpeed, 1, 45, "AA Speed");

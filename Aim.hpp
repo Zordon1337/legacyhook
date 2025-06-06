@@ -9,11 +9,6 @@ namespace Features::Aim {
 		if (!cfg::aim::bIsEnabled) {
 			return;
 		}
-		if (!cfg::aim::bUseAutofire)
-		{
-			if (!(cmd->buttons & CUserCmd::IN_ATTACK)) return;
-			
-		} //else { if ((cmd->buttons & CUserCmd::IN_ATTACK)) cmd->buttons = 0; }
 		CVector bestAngle{};
 		float bestFov = cfg::aim::flAimbotFov;
 		CEntity* bestTarget = nullptr;
@@ -29,6 +24,7 @@ namespace Features::Aim {
 
 			CVector localEyePosition = vars::localPlayer->GetEyePosition();
 
+			// todo, if not visible, shot only visible hitboxes
 			CTrace trace;
 			I::engineTrace->TraceRay(
 				CRay{ localEyePosition, bones[10].Origin() },
@@ -47,8 +43,15 @@ namespace Features::Aim {
 				bestTarget = player;
 			}
 		}
+		bool clamped{ false };
+
 		if (bestTarget && cfg::aim::bIsEnabled) {
 			auto oldangle = cmd->viewangles;
+			if (std::abs(bestAngle.x) > 255 || std::abs(bestAngle.y) > 255) {
+				bestAngle.x = std::clamp(bestAngle.x, -255.f, 255.f);
+				bestAngle.y = std::clamp(bestAngle.y, -255.f, 255.f);
+				clamped = true;
+			}
 			if (cfg::aim::bSilentAim) {
 
 				cmd->viewangles = cmd->viewangles + bestAngle;
@@ -57,8 +60,17 @@ namespace Features::Aim {
 
 				I::engine->SetViewAngles(cmd->viewangles + bestAngle);
 			}
-			
+			auto activeweapon = vars::localPlayer->getActiveWeapon();
+			if (!activeweapon) {
+				return;
+			}
+			if (cfg::aim::bUseAutofire && activeweapon->nextPrimaryAttack() <= I::globals->currentTime && activeweapon->getInaccuracy() <= cfg::aim::flMaxInaccurracy && !clamped) {
+				cmd->buttons |= CUserCmd::IN_ATTACK;
+			}
+			if(clamped)
+				cmd->buttons &= ~CUserCmd::IN_ATTACK;
 		}
+
 
 
 	}

@@ -178,6 +178,7 @@ namespace cfg {
 		bool bAntiAim = false;
 		int iAntiAimSpeed = 1;
 		float flAimbotFov = 1;
+		float flMaxInaccurracy = 1;
 
 	}
 	namespace esp {

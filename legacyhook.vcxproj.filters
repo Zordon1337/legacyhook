@@ -92,9 +92,6 @@
     <ClInclude Include="CEntity.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Structs.h">
-      <Filter>Source Files\SDK</Filter>
-    </ClInclude>
     <ClInclude Include="IVEngineClient.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
@@ -154,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Visuals.hpp">
       <Filter>Source Files\Features</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

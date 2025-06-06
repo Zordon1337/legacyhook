@@ -12,8 +12,8 @@ struct WeaponSkin {
 
 class Root {
 public:
-	std::unordered_map<int, WeaponSkin> weapon_skins;   // mapping of weapon id -> WeaponSkin
-	std::unordered_map<std::string, int> paintkit_ids;  // mapping of paintkit name -> paintkit id
+	std::unordered_map<int, WeaponSkin> weapon_skins;   
+	std::unordered_map<std::string, int> paintkit_ids;  
 
 	void parseJson(const std::string& jsonData) {
 		json j = json::parse(jsonData);
@@ -34,24 +34,22 @@ public:
 	}
 
 	int getPaintkitIdForWeapon(int weaponId) {
-		// Step 1: Find weapon by ID
 		auto weaponIt = weapon_skins.find(weaponId);
 		if (weaponIt != weapon_skins.end()) {
 			std::string paintkitName = weaponIt->second.paintkit_name;
 
-			// Step 2: Find paintkit ID based on paintkit name
 			auto paintkitIt = paintkit_ids.find(paintkitName);
 			if (paintkitIt != paintkit_ids.end()) {
-				return paintkitIt->second; // Found paintkit ID
+				return paintkitIt->second;
 			}
 			else {
 				std::cerr << "Paintkit name not found: " << paintkitName << std::endl;
-				return -1; // Return an error code if paintkit is not found
+				return -1; 
 			}
 		}
 		else {
 			std::cerr << "Weapon with ID " << weaponId << " not found." << std::endl;
-			return -1; // Return an error code if weapon is not found
+			return -1;
 		}
 	}
 };

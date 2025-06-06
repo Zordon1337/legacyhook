@@ -97,12 +97,14 @@ bool __stdcall hk::CreateMove(float frameTime, CUserCmd* cmd) noexcept
 	if (CreateMoveOriginal(I::clientmode, frameTime, cmd))
 		I::engine->SetViewAngles(cmd->viewangles);
 
+	// i was on crack or smth? cmove is only when player is spawned lol
 	if (I::engine->IsInGame())
 	{
 		auto localPlayer = I::entitylist->GetEntityFromIndex(I::engine->GetLocalPlayerIndex());
 		vars::localPlayer = localPlayer;
 		if (localPlayer)
 		{
+			I::globals->serverTime(cmd);
 			
 
 

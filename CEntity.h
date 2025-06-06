@@ -102,7 +102,10 @@ public:
 	{
 		return memory::Call<bool>(this + 0x8, 9);
 	}
+	inline int tickBase() noexcept {
 
+		return *reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(this) + 0x17C0);
+	}
 	constexpr const CVector& GetAbsOrigin() noexcept
 	{
 		return memory::Call<const CVector&>(this, 10);
@@ -144,6 +147,19 @@ public:
 
 	 inline int* getMusicKit() {
 		 return (int*)((DWORD)this + 0x1D9C);
+	 }
+
+
+	 constexpr CEntity* getActiveWeapon() noexcept
+	 {
+		 return memory::Call<CEntity*>(this, 252);
+	 }
+	 constexpr float getInaccuracy() noexcept
+	 {
+		 return memory::Call<float>(this, 459);
+	 }
+	 inline float nextPrimaryAttack() noexcept {
+		 return *reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(this) + 0x159C);
 	 }
 };
 

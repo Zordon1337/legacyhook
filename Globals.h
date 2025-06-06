@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
-
+#include "CUserCmd.h"
+#include "vars.hpp"
 class IGlobalVars
 {
 public:
@@ -21,4 +22,19 @@ public:
 	bool remoteClient;
 	std::int32_t timestampNetworkingBase;
 	std::int32_t timestampRandomizeWindow;
+
+	float serverTime(CUserCmd* cmd) const noexcept
+	{
+		static int tick;
+		static CUserCmd* lastCmd;
+
+		if (cmd) {
+			if (vars::localPlayer && (!lastCmd || lastCmd->hasbeenpredicted))
+				tick = vars::localPlayer->tickBase();
+			else
+				tick++;
+			lastCmd = cmd;
+		}
+		return tick * intervalPerTick;
+	}
 };
