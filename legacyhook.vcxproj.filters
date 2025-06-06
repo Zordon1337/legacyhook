@@ -131,7 +131,7 @@
     <ClInclude Include="Movement.hpp">
       <Filter>Source Files\Features</Filter>
     </ClInclude>
-    <ClInclude Include="CInput..h">
+    <ClInclude Include="CInput.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="Recv.h">
@@ -154,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="Structs.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSWeaponData.h">
+      <Filter>Source Files\SDK</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

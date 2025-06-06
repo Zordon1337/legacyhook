@@ -98,6 +98,14 @@ public:
         };
     }
 
+    float Length2D() const
+    {
+        return sqrt(x * x + y * y);
+    }
+	inline QAngle ToQangle() const noexcept
+	{
+        return { x,y,z };
+	}
     float x{ }, y{ }, z{ };
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Structs.h"
+#include "CSWeaponData.h"
 class CEntity
 {
 public:
@@ -158,8 +159,39 @@ public:
 	 {
 		 return memory::Call<float>(this, 459);
 	 }
+	 constexpr float getSpread() noexcept
+	 {
+		 return memory::Call<float>(this, 460);
+	 }
+	 constexpr void UpdateAccuracyPenalty() noexcept
+	 {
+		 return memory::Call<void>(this, 461);
+	 }
 	 inline float nextPrimaryAttack() noexcept {
 		 return *reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(this) + 0x159C);
+	 }
+	 constexpr CSWeaponData* getWeaponDate() noexcept
+	 {
+		 /*
+		 
+		 double __thiscall sub_104FB270(_DWORD *this)
+			{
+			  int v1; // esi
+			  _DWORD *v2; // edi
+			  unsigned __int32 v3; // xmm0_4
+			  int v5; // [esp+0h] [ebp-Ch]
+
+			  v1 = this[1433];
+			  v2 = this + 1122;
+			  (*(void (__stdcall **)(int))(*this + 1724))(v5); <--- 1724 / 4 => 431
+			  if ( v1 )
+				v3 = sub_103841D0("spread alt", v2).m128_u32[0];
+			  else
+				v3 = sub_103841D0("spread", v2).m128_u32[0];
+			  return (float)(*(float *)&v3 * 0.001);
+			}
+		 */
+		 return memory::Call<CSWeaponData*>(this, 431);
 	 }
 };
 

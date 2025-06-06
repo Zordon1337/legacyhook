@@ -6,4 +6,8 @@ namespace meth {
 	void Norm(CVector& angles);
 	float Normalize(float ang);
 	void CorrectMovement(CVector vOldAngles, CUserCmd* pCmd, float fOldForward, float fOldSidemove);
+	void AngleVectors(const QAngle& angles, CVector& forward);
+	void AngleVectors(const QAngle& angles, CVector& forward, CVector& right, CVector& up);
+	void VectorAngles(const CVector& forward, QAngle& angles);
+	void VectorAngles(const CVector& forward, CVector& up, QAngle& angles);
 }

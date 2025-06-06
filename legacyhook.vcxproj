@@ -158,8 +158,9 @@
   <ItemGroup>
     <ClInclude Include="Aim.hpp" />
     <ClInclude Include="CEntity.h" />
-    <ClInclude Include="CInput..h" />
+    <ClInclude Include="CInput.h" />
     <ClInclude Include="cmenu.hpp" />
+    <ClInclude Include="CSWeaponData.h" />
     <ClInclude Include="CUserCmd.h" />
     <ClInclude Include="EngineVGUI.h" />
     <ClInclude Include="EntityList.h" />

@@ -8,7 +8,7 @@
 #include "Globals.h"
 #include "IEngineTrace.h"
 #include "IPrediction.h"
-#include "CInput..h"
+#include "CInput.h"
 #include "IVModelInfoClient.h"
 #include "IBaseClientDLL.h"
 namespace I {

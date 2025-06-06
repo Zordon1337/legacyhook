@@ -2,6 +2,12 @@
 #include "interfaces.h"
 #include "CUserCmd.h"
 namespace Features::Aim {
+	float RandomFloat(float min, float max)
+	{
+		static auto oRandomFloat = reinterpret_cast<float(*)(float, float)>(GetProcAddress(GetModuleHandleA("vstdlib.dll"), "RandomFloat"));
+		return oRandomFloat(min, max);
+	}
+
 	void RunAimbot(CUserCmd* cmd) {
 		if (!vars::localPlayer) {
 			return;
@@ -64,9 +70,38 @@ namespace Features::Aim {
 			if (!activeweapon) {
 				return;
 			}
-			if (cfg::aim::bUseAutofire && activeweapon->nextPrimaryAttack() <= I::globals->currentTime && activeweapon->getInaccuracy() <= cfg::aim::flMaxInaccurracy && !clamped) {
-				cmd->buttons |= CUserCmd::IN_ATTACK;
+			auto wdata = activeweapon->getWeaponDate();
+/*
+			int hits = 0;
+			int rays = 100;
+			for (int i = 0; i < rays; i++)
+			{
+				auto spread = activeweapon->getInaccuracy() + activeweapon->getSpread();
+				CVector randomizer = {
+					RandomFloat(-(spread/2),spread/2),
+					RandomFloat(-(spread / 2),spread / 2),
+					RandomFloat(-(spread / 2),spread / 2)
+				};
+				auto randomized_forward = cmd->viewangles + randomizer;
+				CTrace trace;
+				I::engineTrace->TraceRay(
+					CRay{ vars::localPlayer->GetEyePosition(),  vars::localPlayer->GetEyePosition() + randomized_forward * CVector{wdata->range,wdata->range,wdata->range} },
+					MASK_SHOT, { bestTarget },
+					trace
+				);
+
+
+				//std::cout << "spread: " << spread << std::endl;
+				//std::cout << "randomizer: " << randomizer.x << ", " << randomizer.y << ", " << randomizer.z <<  std::endl;
+				//std::cout << "randomized_forward: " << randomized_forward.x << ", " <<  randomized_forward.y << ", " <<  randomized_forward.z << std::endl;
+				//std::cout << "is Trace an entity: " << (trace.entity == bestTarget) << std::endl;
+				if (trace.entity && trace.entity == bestTarget) {
+					hits++;
+				}
 			}
+			std::cout << "hits: " << hits << std::endl;*/
+			if (cfg::aim::bUseAutofire && activeweapon->nextPrimaryAttack() <= I::globals->currentTime && activeweapon->getInaccuracy() <= cfg::aim::flMaxInaccurracy && !clamped)
+				cmd->buttons |= CUserCmd::IN_ATTACK;
 			if(clamped)
 				cmd->buttons &= ~CUserCmd::IN_ATTACK;
 		}
