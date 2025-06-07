@@ -342,7 +342,7 @@ namespace CMenu {
                 NextPos.y += 40;
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bUseAutofire, "Autofire");
                 NextPos.y += 40;
-                CMenuElement::SliderFloat(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::flMaxInaccurracy, 0, 1, "Hit Chance");
+                CMenuElement::SliderFloat(NextPos.x, NextPos.y + 5, NextPos.x + 150, NextPos.y + 15, CheckboxFont, cfg::aim::flMaxInaccurracy, 0, 100, "Hit Chance");
                 NextPos.y += 40;
                 CMenuElement::Checkbox(NextPos.x, NextPos.y + 5, CheckboxFont, cfg::aim::bSilentAim, "Silent Aim");
                 NextPos.y += 40;

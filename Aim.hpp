@@ -1,11 +1,75 @@
 #include "vars.hpp"
 #include "interfaces.h"
 #include "CUserCmd.h"
+#include <random>
+#include "meth.cpp"
 namespace Features::Aim {
 	float RandomFloat(float min, float max)
 	{
 		static auto oRandomFloat = reinterpret_cast<float(*)(float, float)>(GetProcAddress(GetModuleHandleA("vstdlib.dll"), "RandomFloat"));
 		return oRandomFloat(min, max);
+	}
+
+	static void setRandomSeed(int seed) noexcept
+	{
+		using randomSeedFn = void(*)(int);
+		static auto randomSeed{ reinterpret_cast<randomSeedFn>(GetProcAddress(GetModuleHandleA("vstdlib.dll"), "RandomSeed")) };
+		randomSeed(seed);
+	}
+
+	float getRandom(float bottom, float top) noexcept
+	{
+		std::random_device rd{};
+		std::mt19937 generator(rd());
+		std::uniform_real_distribution<float> dis(bottom, top);
+		return dis(generator);
+	}
+	bool hitChance(CEntity* localPlayer, CEntity* entity, CEntity* weaponData, const CVector& destination, const CUserCmd* cmd, const int hitChance) noexcept
+	{
+		if (!hitChance)
+			return true;
+
+		constexpr int maxSeed = 255; //256
+
+		const CVector angles(destination + cmd->viewangles);
+
+		int hits = 0;
+		const int hitsNeed = static_cast<int>(static_cast<float>(maxSeed) * (static_cast<float>(hitChance) / 100.f));
+		const auto weapSpread = weaponData->getSpread();
+		const auto weapInaccuracy = weaponData->getInaccuracy();
+		const auto localEyePosition = localPlayer->GetEyePosition();
+		const auto range = weaponData->getWeaponDate()->range;
+		cfg::aim::drawPos.clear();
+		for (int i = 0; i < maxSeed; ++i)
+		{
+			setRandomSeed(i + 1);
+			float inaccuracy = RandomFloat(0.f, 1.f);
+			float spread = RandomFloat(0.f, 1.f);
+			const float spreadX = RandomFloat(0.f, 2.f * static_cast<float>(3.14));
+			const float spreadY = RandomFloat(0.f, 2.f * static_cast<float>(3.14));
+
+			inaccuracy *= weapInaccuracy;
+			spread *= weapSpread;
+
+			CVector spreadView{ (cosf(spreadX) * inaccuracy) + (cosf(spreadY) * spread),
+							   (sinf(spreadX) * inaccuracy) + (sinf(spreadY) * spread), 0.0f };
+			CVector direction{ (angles.x + (angles.y * spreadView.x) + (angles.z * spreadView.y)) * range };
+
+			static CTrace trace;
+			CVector pos;
+			I::debugoverlay->ScreenPosition(localEyePosition + direction, pos);
+			cfg::aim::drawPos["Line"] = pos;
+			I::engineTrace->TraceRay({ localEyePosition, localEyePosition + direction }, MASK_SHOT, { localPlayer }, trace);
+			if (trace.entity == entity)
+				++hits;
+
+			if (hits >= hitsNeed)
+				return true;
+
+			if ((maxSeed - i + hits) < hitsNeed)
+				return false;
+		}
+		return false;
 	}
 
 	void RunAimbot(CUserCmd* cmd) {
@@ -18,6 +82,12 @@ namespace Features::Aim {
 		CVector bestAngle{};
 		float bestFov = cfg::aim::flAimbotFov;
 		CEntity* bestTarget = nullptr;
+
+		auto activeweapon = vars::localPlayer->getActiveWeapon();
+		if (!activeweapon) {
+			return;
+		}
+		auto wdata = activeweapon->getWeaponDate();
 
 		for (int i = 1; i < 32; i++) {
 			auto player = I::entitylist->GetEntityFromIndex(i);
@@ -40,7 +110,7 @@ namespace Features::Aim {
 
 			if (!trace.entity || trace.fraction < 0.97f) continue;
 
-			CVector enemyAngle = (bones[10].Origin() - localEyePosition).ToAngle() - cmd->viewangles;
+			CVector enemyAngle = (bones[10].Origin() - localEyePosition).ToAngle() - (cmd->viewangles);
 			float fov = std::hypot(enemyAngle.x, enemyAngle.y);
 
 			if (fov < bestFov) {
@@ -52,59 +122,73 @@ namespace Features::Aim {
 		bool clamped{ false };
 
 		if (bestTarget && cfg::aim::bIsEnabled) {
-			auto oldangle = cmd->viewangles;
-			if (std::abs(bestAngle.x) > 255 || std::abs(bestAngle.y) > 255) {
-				bestAngle.x = std::clamp(bestAngle.x, -255.f, 255.f);
-				bestAngle.y = std::clamp(bestAngle.y, -255.f, 255.f);
-				clamped = true;
-			}
-			if (cfg::aim::bSilentAim) {
+			/*
 
-				cmd->viewangles = cmd->viewangles + bestAngle;
-			}
-			else {
+		
+			too big skill issue to implement
 
-				I::engine->SetViewAngles(cmd->viewangles + bestAngle);
-			}
-			auto activeweapon = vars::localPlayer->getActiveWeapon();
-			if (!activeweapon) {
-				return;
-			}
-			auto wdata = activeweapon->getWeaponDate();
-/*
 			int hits = 0;
-			int rays = 100;
-			for (int i = 0; i < rays; i++)
-			{
-				auto spread = activeweapon->getInaccuracy() + activeweapon->getSpread();
-				CVector randomizer = {
-					RandomFloat(-(spread/2),spread/2),
-					RandomFloat(-(spread / 2),spread / 2),
-					RandomFloat(-(spread / 2),spread / 2)
+			int totalShots = 150;
+
+			QAngle ang = cmd->viewangles.ToQangle() + bestAngle.ToQangle();
+
+			CVector forward, right, up;
+			meth::AngleVectors(ang, forward, right, up);
+
+			float spread = activeweapon->getSpread();
+			float inaccuracy = activeweapon->getInaccuracy();
+
+			auto VecScale = [](const CVector& vec, float scalar) -> CVector {
+				return { vec.x * scalar, vec.y * scalar, vec.z * scalar };
 				};
-				auto randomized_forward = cmd->viewangles + randomizer;
+
+			auto VecNormalize = [](const CVector& vec) -> CVector {
+				float len = std::sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+				return (len != 0.f) ? CVector{ vec.x / len, vec.y / len, vec.z / len } : CVector{};
+				};
+
+			for (int i = 0; i < totalShots; i++) {
+				float rand1 = RandomFloat(0.f, 1.f);
+				float rand2 = RandomFloat(0.f, 2.f * M_PI);
+
+				float total_deviation = spread + inaccuracy;
+				float spreadX = std::cos(rand2) * rand1 * total_deviation;
+				float spreadY = std::sin(rand2) * rand1 * total_deviation;
+
+
+				CVector shotDir = forward + VecScale(right, spreadX) + VecScale(up, spreadY);
+				shotDir = VecNormalize(shotDir);
+
 				CTrace trace;
 				I::engineTrace->TraceRay(
-					CRay{ vars::localPlayer->GetEyePosition(),  vars::localPlayer->GetEyePosition() + randomized_forward * CVector{wdata->range,wdata->range,wdata->range} },
-					MASK_SHOT, { bestTarget },
+					CRay{ vars::localPlayer->GetEyePosition(), vars::localPlayer->GetEyePosition() + VecScale(shotDir, wdata->range) },
+					MASK_SHOT, { vars::localPlayer },
 					trace
 				);
 
-
-				//std::cout << "spread: " << spread << std::endl;
-				//std::cout << "randomizer: " << randomizer.x << ", " << randomizer.y << ", " << randomizer.z <<  std::endl;
-				//std::cout << "randomized_forward: " << randomized_forward.x << ", " <<  randomized_forward.y << ", " <<  randomized_forward.z << std::endl;
-				//std::cout << "is Trace an entity: " << (trace.entity == bestTarget) << std::endl;
-				if (trace.entity && trace.entity == bestTarget) {
+				if (trace.entity == bestTarget)
 					hits++;
-				}
 			}
-			std::cout << "hits: " << hits << std::endl;*/
-			if (cfg::aim::bUseAutofire && activeweapon->nextPrimaryAttack() <= I::globals->currentTime && activeweapon->getInaccuracy() <= cfg::aim::flMaxInaccurracy && !clamped)
+			
+			float hitchance = (hits / static_cast<float>(totalShots)) * 100.f;
+			*/
+			float hitchance = 1 / activeweapon->getInaccuracy();
+			std::cout << "Hitchance: " << hitchance << "%" << std::endl;
+
+			if (hitchance < cfg::aim::flMaxInaccurracy) {
+				return; 
+			}
+			if (cfg::aim::bSilentAim) {
+				cmd->viewangles = cmd->viewangles + bestAngle;
+			}
+			else {
+				I::engine->SetViewAngles(cmd->viewangles + bestAngle);
+			}
+
+			if (cfg::aim::bUseAutofire && activeweapon->nextPrimaryAttack() <= I::globals->currentTime)
 				cmd->buttons |= CUserCmd::IN_ATTACK;
-			if(clamped)
-				cmd->buttons &= ~CUserCmd::IN_ATTACK;
 		}
+
 
 
 

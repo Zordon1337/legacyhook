@@ -58,6 +58,11 @@ public:
         };
     }
 
+    QAngle Normalize() const noexcept {
+        float len = std::sqrt(x * x + y * y + z * z);
+        if (len == 0.0f) return { 0.f, 0.f, 0.f };
+        return { x / len, y / len, z / len };
+    }
     float x{}, y{}, z{};
 };
 
@@ -106,6 +111,15 @@ public:
 	{
         return { x,y,z };
 	}
+    constexpr CVector operator*(float scalar) const noexcept {
+        return { x * scalar, y * scalar, z * scalar };
+    }
+
+    CVector Normalize() const noexcept {
+        float len = std::sqrt(x * x + y * y + z * z);
+        if (len == 0.0f) return { 0.f, 0.f, 0.f };
+        return { x / len, y / len, z / len };
+    }
     float x{ }, y{ }, z{ };
 };
 

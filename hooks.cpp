@@ -181,6 +181,13 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				
 			}
 		}
+		// foreach in unordered_map cfg::aim::pos
+		for (const auto& [key, value] : cfg::aim::drawPos) {
+			if (value.x == 0 && value.y == 0) continue;
+
+			I::surface->DrawOutlinedRect(value.x, value.y,value.x+15,value.y+15);
+		}
+
 		if (cfg::esp::bDrawVelocity && vars::localPlayer && vars::localPlayer->isAlive()) {
 			int w, h;
 			I::engine->GetScreenSize(w, h);

@@ -170,6 +170,11 @@ public:
 	 inline float nextPrimaryAttack() noexcept {
 		 return *reinterpret_cast<float*>(reinterpret_cast<uintptr_t>(this) + 0x159C);
 	 }
+
+	 inline CVector GetAimPunch() noexcept
+	 {
+		 return *reinterpret_cast<CVector*>(reinterpret_cast<uintptr_t>(this) + 0x70);
+	 }
 	 constexpr CSWeaponData* getWeaponDate() noexcept
 	 {
 		 /*

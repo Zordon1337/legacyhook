@@ -180,6 +180,7 @@ namespace cfg {
 		float flAimbotFov = 1;
 		float flMaxInaccurracy = 75;
 
+		std::unordered_map<const char*, CVector> drawPos = {};
 	}
 	namespace esp {
 		bool bBoxEsp = false;
