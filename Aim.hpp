@@ -175,7 +175,7 @@ namespace Features::Aim {
 			float hitchance = 1 / activeweapon->getInaccuracy();
 			std::cout << "Hitchance: " << hitchance << "%" << std::endl;
 
-			if (hitchance < cfg::aim::flMaxInaccurracy) {
+			if (hitchance < cfg::aim::flHitChance) {
 				return; 
 			}
 			if (cfg::aim::bSilentAim) {

@@ -178,7 +178,7 @@ namespace cfg {
 		bool bAntiAim = false;
 		int iAntiAimSpeed = 1;
 		float flAimbotFov = 1;
-		float flMaxInaccurracy = 75;
+		float flHitChance = 75;
 
 		std::unordered_map<const char*, CVector> drawPos = {};
 	}
