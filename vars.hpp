@@ -181,6 +181,8 @@ namespace cfg {
 		float flHitChance = 75;
 
 		std::unordered_map<const char*, CVector> drawPos = {};
+		std::unordered_map<int, unsigned long> fonts = {
+		};
 	}
 	namespace esp {
 		bool bBoxEsp = false;

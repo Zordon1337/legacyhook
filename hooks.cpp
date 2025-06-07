@@ -74,6 +74,11 @@ void hk::Init() {
 	I::surface->SetFontGlyphSet(TitleFont, "Tahoma", 16, 900, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(VelocityFont, "Tahoma", 32, 900, 0, 0, 0x010);
 	I::surface->SetFontGlyphSet(CheckboxFont, "Arial", 16, 100, 0, 0, 0x010);
+	for (int i = 1; i < 30; i++) {
+		auto font = I::surface->CreateFont();
+		I::surface->SetFontGlyphSet(font, "Tahoma", i, 400, 0, 0, 0x010);
+		cfg::aim::fonts[i] = font;
+	}
 	for (ClientClass* cl = I::baseclient->GetAllClasses(); cl; cl = cl->m_pNext) {
 		if (!strcmp(cl->m_pNetworkName, "CBaseViewModel")) {
 			RecvTable* cltable = cl->m_pRecvTable;
@@ -179,6 +184,30 @@ void __stdcall hk::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool al
 				Features::Visuals::DrawBox(left, top.y, right, bottom.y, 255, 255, 255, 255);
 				Features::Visuals::DrawHealthBar(player, left, bottom, top, h);
 				
+				int textX = (left + right) / 2;
+
+				int textY = static_cast<int>(top.y) - 2; 
+
+				auto name = "[player]";
+				auto fontSize = std::clamp(static_cast<int>(h * 0.15f), 4, 12);
+				auto font = cfg::aim::fonts[fontSize];
+
+				wchar_t wname[64];
+				mbstowcs(wname, name, sizeof(wname) / sizeof(wchar_t));
+
+				auto textsize = I::surface->getTextSize(name, font);
+
+				textX -= textsize.x / 2;
+
+				I::surface->DrawSetTextFont(font);
+				I::surface->DrawSetTextColor(0, 0, 0, 255);
+				I::surface->DrawSetTextPos(textX + 1, textY + 1);
+				I::surface->DrawPrintText(wname, wcslen(wname), 0);
+
+				I::surface->DrawSetTextColor(255, 255, 255, 255);
+				I::surface->DrawSetTextPos(textX, textY);
+				I::surface->DrawPrintText(wname, wcslen(wname), 0);
+
 			}
 		}
 		// foreach in unordered_map cfg::aim::pos

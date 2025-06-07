@@ -120,6 +120,11 @@ public:
         if (len == 0.0f) return { 0.f, 0.f, 0.f };
         return { x / len, y / len, z / len };
     }
+
+	inline float Distance(CVector other) const noexcept
+	{
+		return std::sqrt(std::pow(x - other.x, 2) + std::pow(y - other.y, 2) + std::pow(z - other.z, 2));
+	}
     float x{ }, y{ }, z{ };
 };
 
