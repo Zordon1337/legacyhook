@@ -9,11 +9,11 @@
 #include <chrono>
 #include "SDK/cmenu.hpp"
 
-#include "Aim.hpp"
-#include "Movement.hpp"
+#include "Feature/Aim.hpp"
+#include "Feature/Movement.hpp"
 #include "SDK/IBaseClientDLL.h"
 #include "skins.hpp"
-#include "Visuals.hpp"
+#include "Feature/Visuals.hpp"
 #define POW(x) ((x)*(x))
 
 HFont WatermarkFont;

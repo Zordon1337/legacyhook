@@ -125,16 +125,16 @@
     <ClInclude Include="SDK\cmenu.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Aim.hpp">
+    <ClInclude Include="Feature\Aim.hpp">
       <Filter>Source Files\Features</Filter>
     </ClInclude>
-    <ClInclude Include="Movement.hpp">
+    <ClInclude Include="Feature\Movement.hpp">
       <Filter>Source Files\Features</Filter>
     </ClInclude>
     <ClInclude Include="SDK\CInput.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Recv.h">
+    <ClInclude Include="SDK\Recv.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
     <ClInclude Include="SDK\IVModelInfoClient.h">
@@ -149,7 +149,7 @@
     <ClInclude Include="SDK\EntityList.h">
       <Filter>Source Files\SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Visuals.hpp">
+    <ClInclude Include="Feature\Visuals.hpp">
       <Filter>Source Files\Features</Filter>
     </ClInclude>
     <ClInclude Include="SDK\Structs.h">

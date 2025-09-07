@@ -156,7 +156,7 @@
     <ClCompile Include="MinHook\trampoline.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Aim.hpp" />
+    <ClInclude Include="Feature\Aim.hpp" />
     <ClInclude Include="SDK\CEntity.h" />
     <ClInclude Include="SDK\CInput.h" />
     <ClInclude Include="SDK\cmenu.hpp" />
@@ -185,12 +185,12 @@
     <ClInclude Include="MinHook\hde\table64.h" />
     <ClInclude Include="MinHook\MinHook.h" />
     <ClInclude Include="MinHook\trampoline.h" />
-    <ClInclude Include="Movement.hpp" />
-    <ClInclude Include="Recv.h" />
+    <ClInclude Include="Feature\Movement.hpp" />
+    <ClInclude Include="SDK\Recv.h" />
     <ClInclude Include="skins.hpp" />
     <ClInclude Include="SDK\Structs.h" />
     <ClInclude Include="vars.hpp" />
-    <ClInclude Include="Visuals.hpp" />
+    <ClInclude Include="Feature\Visuals.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

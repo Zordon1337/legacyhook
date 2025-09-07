@@ -1,6 +1,6 @@
 #pragma once
-#include "CEntity.h"
-#include "Recv.h"
+#include "SDK/CEntity.h"
+#include "SDK/Recv.h"
 #include <unordered_map>
 namespace vars {
 	CEntity* localPlayer = nullptr;

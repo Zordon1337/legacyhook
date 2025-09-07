@@ -1,9 +1,9 @@
 #pragma once
-#include "vars.hpp"
-#include "SDK/CEntity.h"
+#include "../vars.hpp"
+#include "../SDK/CEntity.h"
 #include "Windows.h"
-#include "skins.hpp"
-#include "interfaces.h"
+#include "../skins.hpp"
+#include "../interfaces.h"
 namespace Features::Visuals {
 	void DrawBox(int x, int y, int xx, int yy, int r, int g, int b, int a) {
 		if (cfg::esp::bBoxEsp)
