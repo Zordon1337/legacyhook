@@ -1,7 +1,7 @@
 
 #include "interfaces.h"
 #include <iostream>
-#include "Globals.h"
+#include "SDK/Globals.h"
 void I::Init() {
 	I::baseclient = I::Capture<IBaseClientDLL>("client.dll", "VClient016");
 	std::cout << "baseclient: " << I::baseclient << std::endl;

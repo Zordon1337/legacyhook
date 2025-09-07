@@ -1,16 +1,16 @@
 #pragma once
 #include <Windows.h>
-#include "IVEngineClient.h"
-#include "EntityList.h"
-#include "ISurface.h"
-#include "IVPanel.h"
-#include "EngineVGUI.h"
-#include "Globals.h"
-#include "IEngineTrace.h"
-#include "IPrediction.h"
-#include "CInput.h"
-#include "IVModelInfoClient.h"
-#include "IBaseClientDLL.h"
+#include "SDK/IVEngineClient.h"
+#include "SDK/EntityList.h"
+#include "SDK/ISurface.h"
+#include "SDK/IVPanel.h"
+#include "SDK/EngineVGUI.h"
+#include "SDK/Globals.h"
+#include "SDK/IEngineTrace.h"
+#include "SDK/IPrediction.h"
+#include "SDK/CInput.h"
+#include "SDK/IVModelInfoClient.h"
+#include "SDK/IBaseClientDLL.h"
 namespace I {
 	void Init();
 	IBaseClientDLL* baseclient;

@@ -4,14 +4,14 @@
 #include <iostream>
 #include "vars.hpp"
 #include <string>
-#include "meth.h"
+#include "SDK/meth.h"
 #include <thread>
 #include <chrono>
-#include "cmenu.hpp"
+#include "SDK/cmenu.hpp"
 
 #include "Aim.hpp"
 #include "Movement.hpp"
-#include "IBaseClientDLL.h"
+#include "SDK/IBaseClientDLL.h"
 #include "skins.hpp"
 #include "Visuals.hpp"
 #define POW(x) ((x)*(x))

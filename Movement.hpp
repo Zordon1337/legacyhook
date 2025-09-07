@@ -1,7 +1,7 @@
 #pragma once
 #include "vars.hpp"
-#include "CEntity.h"
-#include "CUserCmd.h"
+#include "SDK/CEntity.h"
+#include "SDK/CUserCmd.h"
 namespace Features::Movement {
 	void RunBhop(CUserCmd* cmd) {
 		if (!cfg::movement::bBunnyHop) return;

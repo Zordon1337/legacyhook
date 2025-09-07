@@ -1,6 +1,6 @@
 #pragma once
-#include "CUserCmd.h"
-#include "IVPanel.h"
+#include "SDK/CUserCmd.h"
+#include "SDK/IVPanel.h"
 enum client_frame_stage_t {
 	FRAME_UNDEFINED = -1,			// (haven't run any frames yet)
 	FRAME_START,

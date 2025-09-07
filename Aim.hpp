@@ -1,8 +1,8 @@
 #include "vars.hpp"
 #include "interfaces.h"
-#include "CUserCmd.h"
+#include "SDK/CUserCmd.h"
 #include <random>
-#include "meth.cpp"
+#include "SDK/meth.cpp"
 namespace Features::Aim {
 	float RandomFloat(float min, float max)
 	{

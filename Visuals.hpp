@@ -1,6 +1,6 @@
 #pragma once
 #include "vars.hpp"
-#include "CEntity.h"
+#include "SDK/CEntity.h"
 #include "Windows.h"
 #include "skins.hpp"
 #include "interfaces.h"
